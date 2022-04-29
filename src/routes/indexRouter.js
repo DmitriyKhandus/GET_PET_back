@@ -31,19 +31,5 @@ router.route('/')
     res.render('index', { posts });
   });
 
-// 	.post(checkForLogIn,  //upload.single('img'), загрузить фото
-// 		async (req, res) => {
-// 			try {
-// 				console.log(req.body)
-// 				const event = await Event.create(
-// 					{...req.body, userId: req.session.user.id, likes: 0},
-// 				);
-// 				res.sendStatus(200);
-// 			} catch (error) {
-// 				res.render('error', {
-// 					message: 'Не удалось создать'
-// 				})
-// 			}
-// 		})
 
 module.exports = router;

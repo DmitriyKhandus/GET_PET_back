@@ -2,18 +2,19 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Species', [{
-      species: "Собака",
+    await queryInterface.bulkInsert('Species', [
+      {
+      species: "Dog",
       createdAt: new Date(),
       updatedAt: new Date()
     },
       {
-        species: "Кошка",
+        species: "Cat",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        species: "Другие",
+        species: "Other",
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -21,11 +22,5 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
   }
 };
