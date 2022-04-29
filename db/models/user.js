@@ -3,7 +3,12 @@ const {Model} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
-		static associate(models) {
+		static associate({Animal, Message, Comment, Favorite, Room}) {
+			this.hasMany(Animal, {foreignKey: 'userId'});
+			this.hasMany(Message, {foreignKey: 'userId'});
+			this.hasMany(Comment, {foreignKey: 'userId'});
+			this.belongsToMany(Animal, {through: 'Favorite', foreignKey: 'userId',
+			});
 		}
 	}
 	
@@ -11,11 +16,14 @@ module.exports = (sequelize, DataTypes) => {
 		userName: DataTypes.STRING,
 		email: DataTypes.STRING,
 		password: DataTypes.TEXT,
-		image: DataTypes.TEXT,
+		avatarPath: DataTypes.TEXT,
 		phone: DataTypes.STRING,
 		about_user: DataTypes.TEXT,
 		role: DataTypes.TEXT,
-		isBanned: DataTypes.BOOLEAN
+		isBanned: DataTypes.BOOLEAN,
+		isActive: DataTypes.BOOLEAN,
+		socketID: DataTypes.STRING,
+		remember_token: DataTypes.STRING,
 	}, {
 		sequelize,
 		modelName: 'User',

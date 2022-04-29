@@ -8,13 +8,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      userName: {
+      userName: { //userName
         type: Sequelize.STRING,
         allowNull: false,
         unique:true,
-        len: [4, 20],
-        is: /^[a-z]+([-_]?[a-z0-9]+){0,2}$/i,
-        //Начинается и кончается на букву/цифру и содержит не более двух "_"/"-" и не подряд.
+        is: /(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/i,
+        //Строчные и прописные латинские буквы, цифры, спецсимволы. Минимум 6 символов
       },
       email: {
         type: Sequelize.STRING,
@@ -28,8 +27,8 @@ module.exports = {
         allowNull: false,
         len: [6, 20]
       },
-      image: {
-        type: Sequelize.TEXT
+      avatarPath: {
+        type: Sequelize.TEXT,
       },
       phone: {
         type: Sequelize.TEXT,
@@ -39,10 +38,24 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       role: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        defaultValue: 'taker'
       },
       isBanned: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      // для чата
+      isActive: {
         type: Sequelize.BOOLEAN
+      },
+      socketID: {
+        type: Sequelize.STRING,
+        defaultValue:null,
+        },
+      remember_token: {
+        type: Sequelize.STRING,
+        //allowNull: false,
       },
       createdAt: {
         allowNull: false,

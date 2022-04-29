@@ -5,7 +5,10 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
   class Species extends Model {
-    static associate(models) {
+    static associate({Breeds}) {
+      this.hasMany(Breeds, {
+        foreignKey: 'breedId',
+      })
     }
   }
   Species.init({
