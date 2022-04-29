@@ -25,6 +25,9 @@ module.exports = {
         },
         onDelete:"CASCADE"
       },
+      price: {
+        type: Sequelize.INTEGER,
+      },
       userId: {
         type: Sequelize.INTEGER,
         references:{
@@ -33,10 +36,10 @@ module.exports = {
         },
         onDelete:"CASCADE"
       },
-      cityId: {
+      locationId: {
         type: Sequelize.INTEGER,
         references:{
-          model:"Cities",
+          model:"Locations",
           key:"id"
         },
         onDelete:"CASCADE"
