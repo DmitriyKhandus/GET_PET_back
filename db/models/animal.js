@@ -13,8 +13,9 @@ module.exports = (sequelize, DataTypes) => {
 		animal_description: DataTypes.TEXT,
 		image: DataTypes.TEXT,
 		speciesId: DataTypes.INTEGER,
+		price: DataTypes.INTEGER,
 		userId: DataTypes.INTEGER,
-		cityId: DataTypes.INTEGER
+		cityId: DataTypes.INTEGER,
 	}, {
 		sequelize,
 		modelName: 'Animal',

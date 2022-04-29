@@ -1,15 +1,28 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Cities', {
+    await queryInterface.createTable('Favorites', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      city: {
-        type: Sequelize.STRING
+      userId: {
+        type: Sequelize.INTEGER,
+        references:{
+          model:"Users",
+          key:"id"
+        },
+        onDelete:"CASCADE"
+      },
+      animalId: {
+        type: Sequelize.INTEGER,
+        references:{
+          model:"Animals",
+          key:"id"
+        },
+        onDelete:"CASCADE"
       },
       createdAt: {
         allowNull: false,
@@ -22,6 +35,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Cities');
+    await queryInterface.dropTable('Favorites');
   }
 };
