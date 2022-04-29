@@ -6,9 +6,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Room extends Model {
     static associate({Messages}) {
-      this.hasMany(Messages, {
-        foreignKey: 'messageId',
-      })
+      this.hasMany(Messages, { foreignKey: 'messageId' })
     }
   }
   Room.init({

@@ -3,12 +3,11 @@ const {Model} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
-		static associate({Animal, Message, Comment, Favorite, Room}) {
-			this.hasMany(Animal, {foreignKey: 'userId'});
-			this.hasMany(Message, {foreignKey: 'userId'});
-			this.hasMany(Comment, {foreignKey: 'userId'});
-			this.belongsToMany(Animal, {through: 'Favorite', foreignKey: 'userId',
-			});
+		static associate({Advertisement: Advertisement, Message, Comment}) {
+			this.hasMany(Advertisement, { foreignKey: 'userId' });
+			this.hasMany(Message, { foreignKey: 'userId' });
+			this.hasMany(Comment, { foreignKey: 'userId' });
+			this.belongsToMany(Advertisement, { through: 'Favorite', foreignKey: 'userId' });
 		}
 	}
 	

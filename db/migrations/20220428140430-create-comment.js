@@ -22,10 +22,10 @@ module.exports = {
         },
         onDelete:"CASCADE"
       },
-      animalId: {
+      advertisementId: {
         type: Sequelize.INTEGER,
         references:{
-          model:"Animals",
+          model:"Advertisements",
           key:"id"
         },
         onDelete:"CASCADE"

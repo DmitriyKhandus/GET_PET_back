@@ -11,7 +11,7 @@ module.exports = {
       breed: {
         type: Sequelize.STRING
       },
-      species_id: {
+      speciesId: {
         type: Sequelize.INTEGER,
         references:{
           model:"Species",

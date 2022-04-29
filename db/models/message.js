@@ -6,12 +6,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Message extends Model {
     static associate({User, Room}) {
-      this.belongsTo(User, {
-        foreignKey: 'userId',
-      }),
-        this.belongsTo(Room, {
-          foreignKey: 'roomId',
-        })
+      this.belongsTo(User, { foreignKey: 'userId' }),
+      this.belongsTo(Room, { foreignKey: 'roomId' })
       }
     }
   Message.init({

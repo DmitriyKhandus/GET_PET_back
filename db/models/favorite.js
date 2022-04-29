@@ -4,12 +4,11 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Favorite extends Model {
-    static associate(Model) {
-    }
+    static associate(Model) {}
   }
   Favorite.init({
     userId: DataTypes.INTEGER,
-    animalId: DataTypes.INTEGER
+    advertisementId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Favorite',

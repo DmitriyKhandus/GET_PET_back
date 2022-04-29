@@ -3,7 +3,7 @@ const {
 	Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-	class Animal extends Model {
+	class Advertisement extends Model {
 		static associate({Species, Breed, User, Location}) {
 			this.hasOne(Species,{ foreignKey: 'speciesId' }),
 			this.hasOne(Breed,{ foreignKey: 'breedId' }),
@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
 			this.hasOne(Location, { foreignKey: 'locationId'})
 			this.belongsToMany(User, {
 				through: 'Favorite',
-				foreignKey: 'animalId',
+				foreignKey: 'advertisementId',
 			});
 		}
 	}
 	
-	Animal.init({
+	Advertisement.init({
 		animal_name: DataTypes.STRING,
 		animal_description: DataTypes.TEXT,
 		image: DataTypes.TEXT,
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
 		locationId: DataTypes.INTEGER,
 	}, {
 		sequelize,
-		modelName: 'Animal',
+		modelName: 'Advertisement',
 	});
-	return Animal;
+	return Advertisement;
 };
