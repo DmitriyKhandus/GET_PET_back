@@ -4,7 +4,7 @@ const checkAuthor = require('../middlewares/checkAuthor');
 
 // на одно животное
 
-router.route('/:id') // защита
+router.route('/:id') // защита ручки
   .get((req, res) => {
     res.redirect('/');
   })

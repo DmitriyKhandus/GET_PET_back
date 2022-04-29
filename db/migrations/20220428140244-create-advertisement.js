@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Animals', {
+    await queryInterface.createTable('Advertisements', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -25,8 +25,17 @@ module.exports = {
         },
         onDelete:"CASCADE"
       },
+      breedId: {
+        type: Sequelize.INTEGER,
+        references:{
+          model:"Breeds",
+          key:"id"
+        },
+        onDelete:"CASCADE"
+      },
       price: {
         type: Sequelize.INTEGER,
+        defaultValue:"0"
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -55,6 +64,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Animals');
+    await queryInterface.dropTable('Advertisements');
   }
 };
