@@ -6,6 +6,7 @@ const FileStore = require('session-file-store')(session);
 
 const authRouter = require('./src/routes/authRouter');
 const usersRouter = require('./src/routes/usersRouter');
+const breedRouter = require('./src/routes/breedRouter');
 
 const app = express();
 
@@ -40,6 +41,9 @@ app.use(
 // APP'S ROUTES
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
+app.use('/cat-breeds', breedRouter);
+app.use('/dog-breeds', breedRouter);
+
 
 app.listen(PORT, () => {
   console.log('Сервер запущен на порте', PORT);
