@@ -40,7 +40,6 @@ app.use(
 );
 
 // APP'S ROUTES
-
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/posts', searchRouter);

@@ -68,31 +68,51 @@ const addPost = async (req, res) => {
   const {
     animal_name, animal_description, species, breed, price, age, userId, location,
   } = req.body;
-  // const { id: speciesId } = await Species.findOne({ where: { species } });
-  // const { id: breedId } = await Breed.findOne({ where: { breed } });
-  // const { id: locationId } = await Location.findOne({ where: { location } });
+  const { id: speciesId } = await Species.findOne({ where: { species } });
+  const { id: breedId } = await Breed.findOne({ where: { breed } });
+  const { id: locationId } = await Location.findOne({ where: { location } });
   const image = `/img/${req.file.originalname}`;
   console.log(req.body, req.file);
-  // if (speciesId && breedId && locationId) {
-  //   await Advertisement.create({
-  //     animal_name,
-  //     animal_description,
-  //     image,
-  //     price,
-  //     age,
-  //     userId,
-  //     breedId,
-  //     speciesId,
-  //     locationId,
-  //   }, {});
-  // }
-  res.sendStatus(200);
+  if (speciesId && breedId && locationId) {
+    await Advertisement.create({
+      animal_name,
+      animal_description,
+      image,
+      price,
+      age,
+      userId,
+      breedId,
+      speciesId,
+      locationId,
+    }, {});
+    res.sendStatus(200);
+  } else res.sendStatus(400);
 };
 
 const deletePost = async (req, res) => {
+  const { postId, usrId } = req.query;
+  try {
+    const { userId } = await Advertisement.findOne({ where: { id: Number(postId) } });
+    if (Number(usrId) !== userId) {
+      return res.sendStatus(403);
+    }
+    await Advertisement.destroy({ where: { id: Number(postId) } });
+    return res.sendStatus(200);
+  } catch (e) {
+    return res.sendStatus(500);
+  }
+};
 
+const getAllFavourites = async (req, res) => {
+  try {
+    const result = await Favorite.findAll({ where: { userId: req.session.user.id } });
+    console.log(result);
+    return res.sendStatus(200);
+  } catch (err) {
+    return res.sendStatus(500);
+  }
 };
 
 module.exports = {
-  getAllPost, getAll, addPost, deletePost,
+  getAllPost, getAll, addPost, deletePost, getAllFavourites,
 };
