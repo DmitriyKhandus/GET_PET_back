@@ -6,6 +6,7 @@ const FileStore = require('session-file-store')(session);
 
 const authRouter = require('./src/routes/authRouter');
 const usersRouter = require('./src/routes/usersRouter');
+const { searchRouter } = require('./src/routes/searchRouter');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(
   }),
 );
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     name: app.get('cookieName'),
@@ -38,8 +40,10 @@ app.use(
 );
 
 // APP'S ROUTES
+
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
+app.use('/posts', searchRouter);
 
 app.listen(PORT, () => {
   console.log('Сервер запущен на порте', PORT);

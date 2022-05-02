@@ -1,16 +1,16 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Species extends Model {
-    static associate({Breeds}) {
-      this.hasMany(Breeds, { foreignKey: 'breedId' })
+    static associate({ Breed, Advertisement }) {
+      this.hasMany(Breed, { foreignKey: 'speciesId' });
+      this.hasMany(Advertisement, { foreignKey: 'speciesId' });
     }
   }
   Species.init({
-    species: DataTypes.STRING
+    species: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Species',

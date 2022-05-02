@@ -1,17 +1,16 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Room extends Model {
-    static associate({Messages}) {
-      this.hasMany(Messages, { foreignKey: 'messageId' })
+    static associate({ Message }) {
+      this.hasMany(Message, { foreignKey: 'messageId' });
     }
   }
   Room.init({
     room: DataTypes.STRING,
-    messageId: DataTypes.INTEGER
+    messageId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Room',

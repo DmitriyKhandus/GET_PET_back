@@ -4,6 +4,7 @@ const {
   DB_USERNAME, DB_USER_PASSWORD, DB_NAME, DB_HOST, DB_PORT, DB_DIALECT,
 } = process.env;
 
+
 module.exports = {
   development: {
     username: DB_USERNAME,

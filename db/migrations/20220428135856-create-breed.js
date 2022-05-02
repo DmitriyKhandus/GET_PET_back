@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Breeds', {
@@ -6,30 +5,30 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       breed: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       speciesId: {
         type: Sequelize.INTEGER,
-        references:{
-          model:"Species",
-          key:"id"
+        references: {
+          model: 'Species',
+          key: 'id',
         },
-        onDelete:"CASCADE"
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Breeds');
-  }
+  },
 };

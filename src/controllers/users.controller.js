@@ -1,10 +1,11 @@
 const { User } = require('../../db/models');
 
 const editUser = async (req, res) => {
+  console.log(req.file);
   let updatedFields = Object.entries(req.body).filter((el) => el[1]);
   if (updatedFields.length) {
     updatedFields = Object.fromEntries(updatedFields);
-    updatedFields.image = `/img/${req.file.originalname}`;
+    updatedFields.avatarPath = `/img/${req.file.originalname}`;
     try {
       // eslint-disable-next-line max-len
       const [, updatedUser] = await User.update(updatedFields, {
