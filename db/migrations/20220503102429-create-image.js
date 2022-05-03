@@ -1,22 +1,22 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Breeds', {
+    await queryInterface.createTable('Images', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      breed: {
-        type: Sequelize.STRING,
-      },
-      speciesId: {
+      advertisementId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Species',
+          model: 'Advertisements',
           key: 'id',
         },
         onDelete: 'CASCADE',
+      },
+      image: {
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,
@@ -29,6 +29,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Breeds');
+    await queryInterface.dropTable('Images');
   },
 };

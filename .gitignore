@@ -135,3 +135,6 @@ sessions/
 .DS_Store
 
 1.html
+
+public/img/*
+
