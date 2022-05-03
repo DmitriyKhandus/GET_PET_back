@@ -38,7 +38,7 @@ module.exports = {
         type: Sequelize.TEXT,
         unique: true,
       },
-      about_user: {
+      aboutUser: {
         type: Sequelize.TEXT,
       },
       role: {
