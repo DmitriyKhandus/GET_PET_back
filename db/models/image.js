@@ -3,17 +3,17 @@ const {
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Favorite extends Model {
+  class Image extends Model {
     static associate({ Advertisement }) {
-
+      this.belongsTo(Advertisement, { foreignKey: 'advertisementId' });
     }
   }
-  Favorite.init({
-    userId: DataTypes.INTEGER,
+  Image.init({
     advertisementId: DataTypes.INTEGER,
+    image: DataTypes.TEXT,
   }, {
     sequelize,
-    modelName: 'Favorite',
+    modelName: 'Image',
   });
-  return Favorite;
+  return Image;
 };

@@ -5,7 +5,7 @@ const editUser = async (req, res) => {
   let updatedFields = Object.entries(req.body).filter((el) => el[1]);
   if (updatedFields.length) {
     updatedFields = Object.fromEntries(updatedFields);
-    updatedFields.avatarPath = `/img/${req.file.originalname}`;
+    updatedFields.avatarPath = `/img/${req.file.path.slice(6)}`;
     try {
       // eslint-disable-next-line max-len
       const [, updatedUser] = await User.update(updatedFields, {

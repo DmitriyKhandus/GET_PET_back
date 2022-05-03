@@ -5,12 +5,12 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Advertisement extends Model {
     static associate({
-      Species, Breed, User, Location,
+      Species, User, Location, Image, Favorite,
     }) {
       this.belongsTo(Species, { foreignKey: 'speciesId' });
-      this.belongsTo(Breed, { foreignKey: 'breedId' });
       this.belongsTo(User, { foreignKey: 'userId' });
       this.belongsTo(Location, { foreignKey: 'locationId' });
+      this.hasMany(Image, { foreignKey: 'advertisementId' });
       this.belongsToMany(User, {
         through: 'Favorite',
         foreignKey: 'advertisementId',
@@ -23,8 +23,9 @@ module.exports = (sequelize, DataTypes) => {
     animal_description: DataTypes.TEXT,
     image: DataTypes.TEXT,
     speciesId: DataTypes.INTEGER,
-    breedId: DataTypes.INTEGER,
+    breed: DataTypes.STRING,
     price: DataTypes.INTEGER,
+    street: DataTypes.STRING,
     age: DataTypes.FLOAT,
     userId: DataTypes.INTEGER,
     locationId: DataTypes.INTEGER,

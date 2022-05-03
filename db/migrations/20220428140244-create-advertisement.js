@@ -24,17 +24,15 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      breedId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Breeds',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
+      breed: {
+        type: Sequelize.STRING,
       },
       price: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
+      },
+      street: {
+        type: Sequelize.STRING,
       },
       age: {
         type: Sequelize.FLOAT,
