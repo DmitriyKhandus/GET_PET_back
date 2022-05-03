@@ -14,8 +14,8 @@ const getAllPost = async (req, res) => {
     });
     const raw = result.map((el) => ({
       id: el.id,
-      description: el.animal_description,
-      name: el.animal_name,
+      description: el.animalDescription,
+      name: el.animalName,
       created: el.createdAt,
       image: el.image,
       location: el['Location.address'],
@@ -46,8 +46,8 @@ const getAll = async (req, res) => {
     let raw = result.map((x) => x.get({ plain: true }));
     raw = result.map((el) => ({
       id: el.id,
-      description: el.animal_description,
-      name: el.animal_name,
+      description: el.animalDescription,
+      name: el.animalName,
       created: el.createdAt,
       image: el.image,
       location: el.Location.location,
@@ -62,15 +62,15 @@ const getAll = async (req, res) => {
 
 const addPost = async (req, res) => {
   const {
-    animal_name, animal_description, species, breed, price, age, userId, location,
+    animalName, animalDescription, species, breed, price, age, userId, location,
   } = req.body;
   const { id: speciesId } = await Species.findOne({ where: { species } });
   const { id: locationId } = await Location.findOne({ where: { location } });
   // const image = `/img/${req.file.originalname}`;
   if (speciesId && locationId) {
     const result = await Advertisement.create({
-      animal_name,
-      animal_description,
+      animalName,
+      animalDescription,
       price,
       age,
       userId, // исправить когда будет фронт
@@ -79,7 +79,7 @@ const addPost = async (req, res) => {
       locationId,
     }, {});
     const images = req.files.map((el) => ({ advertisementId: result.id, image: el.path.slice(6) }));
-    for (let i = 0; i < images.length; i++) {
+    for (let i = 0; i < images.length; i += 1) {
       await Image.create(images[i], {});
     }
     res.sendStatus(200);
@@ -140,10 +140,10 @@ const getAllFavourites = async (req, res) => {
       },
 
     });
-    result = result.Advertisements.map((el) => ({
+    result = result.Advertisements.map((el) => ({ // откуда беёется?
       id: el.id,
-      animal_description: el.animal_description,
-      animal_name: el.animal_name,
+      animalName: el.animalName,
+      animalDescription: el.animalDescription,
       breed: el.breed,
       price: el.price,
       age: el.age,

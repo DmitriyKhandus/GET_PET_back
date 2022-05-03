@@ -7,16 +7,14 @@ const FileStore = require('session-file-store')(session);
 const authRouter = require('./src/routes/authRouter');
 const usersRouter = require('./src/routes/usersRouter');
 
-const { searchRouter } = require('./src/routes/searchRouter');
+const searchRouter = require('./src/routes/searchRouter');
 
 const app = express();
 
 const { PORT, COOKIE_SECRET, COOKIE_NAME } = process.env;
 
-// SERVER'S SETTINGS
 app.set('cookieName', COOKIE_NAME);
 
-// APP'S MIDDLEWARES
 app.use(
   cors({
     origin: true,
@@ -35,17 +33,15 @@ app.use(
     cookie: {
       secure: false,
       httpOnly: true,
-      maxAge: 1e3 * 86400, // COOKIE'S LIFETIME — 1 DAY
+      maxAge: 1e3 * 86400,
     },
   }),
 );
 
-// APP'S ROUTES
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/posts', searchRouter);
 
-
 app.listen(PORT, () => {
-  console.log('Сервер запущен на порте', PORT);
+  console.log(`Server is started on port ${PORT}`);
 });

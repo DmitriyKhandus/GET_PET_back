@@ -1,8 +1,8 @@
 const {
-  Model,
+  Model, DataTypes,
 } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class Message extends Model {
     static associate({ User, Room }) {
       this.belongsTo(User, { foreignKey: 'userId' });

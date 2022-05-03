@@ -1,4 +1,5 @@
 const { Animal } = require('../../db/models');
+
 const router = require('express').Router();
 const checkAuthor = require('../middlewares/checkAuthor');
 
@@ -14,7 +15,7 @@ router.route('/:id') // защита ручки
     res.sendStatus(200);
   })
   .patch(async (req, res) => { // штучная замена
-    const { animal_name, animal_description, image } = req.body;
+    const { animalName, animalDescription, image } = req.body;
     try {
       await Item.update(
         { title, image, description },

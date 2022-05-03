@@ -1,28 +1,30 @@
+const { DataTypes } = require('sequelize');
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
       },
       name: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
         is: /(?=^.{2,10}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[А-ЯЁа-яё]).*$/i,
         // 2-10 символов, возможны цифры, cтрочные и прописные буквы, _-
       },
       email: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
         len: [3, 30],
-        is: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        is: /^[A-Z\d._%+-]+@[A-Z\d.-]+\.[A-Z]{2,4}$/i,
       },
       password: {
-        type: Sequelize.TEXT,
+        type: DataTypes.TEXT,
         allowNull: false,
         is: /(?=^.{6,15}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
         // 6-15 символов; только латиница
@@ -32,46 +34,46 @@ module.exports = {
         // без пробелов и новых строк
       },
       avatarPath: {
-        type: Sequelize.TEXT,
+        type: DataTypes.TEXT,
       },
       phone: {
-        type: Sequelize.TEXT,
+        type: DataTypes.TEXT,
         unique: true,
       },
       aboutUser: {
-        type: Sequelize.TEXT,
+        type: DataTypes.TEXT,
       },
       role: {
-        type: Sequelize.TEXT,
+        type: DataTypes.TEXT,
         defaultValue: 'taker', // почему не работает?
       },
       isBanned: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
       // для чата
       isActive: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
       },
       socketID: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         defaultValue: null,
       },
       remember_token: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         // allowNull: false,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Users');
   },
 };

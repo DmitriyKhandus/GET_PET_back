@@ -1,8 +1,8 @@
 const {
-  Model,
+  Model, DataTypes,
 } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class Favorite extends Model {
     static associate() {
 

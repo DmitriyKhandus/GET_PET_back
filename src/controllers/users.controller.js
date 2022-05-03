@@ -7,7 +7,6 @@ const editUser = async (req, res) => {
     updatedFields = Object.fromEntries(updatedFields);
     updatedFields.avatarPath = `/img/${req.file.path.slice(6)}`;
     try {
-      // eslint-disable-next-line max-len
       const [, updatedUser] = await User.update(updatedFields, {
         where: { id: req.session.user.id },
         returning: true,

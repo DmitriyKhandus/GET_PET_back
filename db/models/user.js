@@ -1,6 +1,6 @@
-const { Model } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class User extends Model {
     static associate({ Advertisement, Message, Comment }) {
       this.hasMany(Advertisement, { foreignKey: 'userId' });

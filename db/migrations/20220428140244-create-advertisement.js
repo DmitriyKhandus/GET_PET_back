@@ -1,23 +1,25 @@
+const { DataTypes } = require('sequelize');
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.createTable('Advertisements', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
       },
       animalName: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       animalDescription: {
-        type: Sequelize.TEXT,
+        type: DataTypes.TEXT,
       },
       image: {
-        type: Sequelize.TEXT,
+        type: DataTypes.TEXT,
       },
       speciesId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'Species',
           key: 'id',
@@ -25,20 +27,20 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       breed: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       price: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         defaultValue: 0,
       },
       address: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       age: {
-        type: Sequelize.FLOAT,
+        type: DataTypes.FLOAT,
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'Users',
           key: 'id',
@@ -46,7 +48,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       locationId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'Locations',
           key: 'id',
@@ -55,15 +57,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Advertisements');
   },
 };

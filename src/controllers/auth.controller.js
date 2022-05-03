@@ -19,7 +19,7 @@ const signUp = async (req, res) => {
 
       };
 
-      return res.json({ id: newUser.id, name: newUser.userName });
+      return res.json({ id: newUser.id, name: newUser.name });
     } catch (error) {
       return res.sendStatus(500);
     }
@@ -33,7 +33,7 @@ const signIn = async (req, res) => {
 
   if (password && email) {
     try {
-      const currentUser = await User.findOne({ where: { email } });
+      const currentUser = await User.findOne({ where: { email } }); // а какой email?
       const isValidPassword = await bcrypt.compare(password, currentUser.password);
       if (currentUser && isValidPassword) {
         req.session.user = {
@@ -41,7 +41,7 @@ const signIn = async (req, res) => {
           name: currentUser.name,
         };
 
-        return res.json({ id: currentUser.id, name: currentUser.userName });
+        return res.json({ id: currentUser.id, name: currentUser.name });
       }
       return res.sendStatus(401);
     } catch (error) {

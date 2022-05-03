@@ -1,17 +1,19 @@
+const { DataTypes } = require('sequelize');
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.createTable('Messages', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
       },
       messageBody: {
-        type: Sequelize.TEXT,
+        type: DataTypes.TEXT,
       },
       senderId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'Users',
           key: 'id',
@@ -19,7 +21,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       receiverId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'Users',
           key: 'id',
@@ -27,22 +29,22 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       conversationId: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       viewed: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Messages');
   },
 };

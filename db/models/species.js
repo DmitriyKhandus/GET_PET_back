@@ -1,13 +1,14 @@
 const {
-  Model,
+  Model, DataTypes,
 } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class Species extends Model {
     static associate({ Advertisement }) {
       this.hasMany(Advertisement, { foreignKey: 'speciesId' });
     }
   }
+
   Species.init({
     species: DataTypes.STRING,
   }, {
