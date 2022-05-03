@@ -1,15 +1,35 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Users', [{
-      userName: 'admin',
-      email: 'admin@admin.ru',
-      password: '123456', // нужен хешированный для входа
+      name: 'admin',
+      email: 'admin@getpet.com',
+      password: 'GetPet_01', // не заносит роль по дефолту
       role: 'admin',
-      isBanned: false,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
-
+    {
+      name: 'user',
+      email: 'user@getpet.com',
+      password: '2GetPet_01',
+      role: 'user',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'user2',
+      email: 'user2@getpet.com',
+      password: '2GetPet_01',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      name: 'user3',
+      email: 'user3@getpet.com',
+      password: '2GetPet_01',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
     ]);
   },
 

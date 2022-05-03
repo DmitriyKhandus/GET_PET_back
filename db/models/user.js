@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   User.init({
-    userName: DataTypes.STRING,
+    name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.TEXT,
     avatarPath: DataTypes.TEXT,
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     isBanned: DataTypes.BOOLEAN,
     isActive: DataTypes.BOOLEAN,
     socketID: DataTypes.STRING,
-    remember_token: DataTypes.STRING,
+    rememberToken: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'User',

@@ -7,10 +7,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      animal_name: {
+      animalName: {
         type: Sequelize.STRING,
       },
-      animal_description: {
+      animalDescription: {
         type: Sequelize.TEXT,
       },
       image: {
@@ -31,7 +31,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
-      street: {
+      address: {
         type: Sequelize.STRING,
       },
       age: {

@@ -2,13 +2,13 @@ const bcrypt = require('bcrypt');
 const { User } = require('../../db/models');
 
 const signUp = async (req, res) => {
-  const { userName, password, email } = req.body;
+  const { name, password, email } = req.body;
 
-  if (userName && password && email) {
+  if (name && password && email) {
     try {
       const secretPass = await bcrypt.hash(password, Number(process.env.ROUNDS_HASH));
       const newUser = await User.create({
-        userName,
+        name,
         password: secretPass,
         email,
       });
@@ -65,7 +65,7 @@ const signOut = async (req, res) => {
 const checkAuth = async (req, res) => {
   try {
     const user = await User.findByPk(req.session.user.id);
-    return res.json({ id: user.id, userName: user.userName });
+    return res.json({ id: user.id, name: user.name });
   } catch (error) {
     return res.sendStatus(500);
   }

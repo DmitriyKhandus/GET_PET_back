@@ -19,13 +19,13 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Advertisement.init({
-    animal_name: DataTypes.STRING,
-    animal_description: DataTypes.TEXT,
+    animalName: DataTypes.STRING,
+    animalDescription: DataTypes.TEXT,
     image: DataTypes.TEXT,
     speciesId: DataTypes.INTEGER,
     breed: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    street: DataTypes.STRING,
+    address: DataTypes.STRING,
     age: DataTypes.FLOAT,
     userId: DataTypes.INTEGER,
     locationId: DataTypes.INTEGER,

@@ -4,7 +4,7 @@ const {
 } = require('../../db/models');
 
 const getAllPost = async (req, res) => {
-  // if (userName && password && email) {
+  // if (name && password && email) {
   try {
     const result = await Advertisement.findAll({
       include: [{ model: Location },
@@ -18,7 +18,7 @@ const getAllPost = async (req, res) => {
       name: el.animal_name,
       created: el.createdAt,
       image: el.image,
-      location: el['Location.location'],
+      location: el['Location.address'],
       species: el['Species.species'],
       breed: el['Breed.breed'],
     }));
@@ -116,7 +116,7 @@ const addToFavourites = async (req, res) => {
 const getAllFavourites = async (req, res) => {
   try {
     const {
-      speciesId, limit, location, offset,
+      speciesId, limit, city, offset,
     } = req.query;
 
     let result = await User.findOne({
@@ -134,7 +134,7 @@ const getAllFavourites = async (req, res) => {
           attributes: ['species'],
           model: Species,
         }, {
-          attributes: ['location'],
+          attributes: ['city'],
           model: Location,
         }],
       },
@@ -148,9 +148,9 @@ const getAllFavourites = async (req, res) => {
       price: el.price,
       age: el.age,
       images: el.Images,
-      street: el.street,
+      address: el.street,
       species: el.Species.species,
-      location: el.Location.location,
+      city: el.Location.location,
     }));
 
     return res.json(result);

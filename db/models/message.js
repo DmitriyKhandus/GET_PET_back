@@ -9,11 +9,12 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(Room, { foreignKey: 'roomId' });
     }
   }
+
   Message.init({
     message_body: DataTypes.TEXT,
-    sender_id: DataTypes.INTEGER,
-    receiver_id: DataTypes.INTEGER,
-    conversation_id: DataTypes.STRING,
+    senderId: DataTypes.INTEGER,
+    receiverId: DataTypes.INTEGER,
+    conversationId: DataTypes.STRING,
     viewed: DataTypes.BOOLEAN,
   }, {
     sequelize,

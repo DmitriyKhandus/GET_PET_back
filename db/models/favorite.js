@@ -4,10 +4,11 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
   class Favorite extends Model {
-    static associate({ Advertisement }) {
+    static associate() {
 
     }
   }
+
   Favorite.init({
     userId: DataTypes.INTEGER,
     advertisementId: DataTypes.INTEGER,

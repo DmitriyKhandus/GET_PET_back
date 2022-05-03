@@ -7,24 +7,29 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      userName: { // userName
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
-        is: /(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/i,
-        // Строчные и прописные латинские буквы, цифры, спецсимволы. Минимум 6 символов
+        is: /(?=^.{2,10}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[А-ЯЁа-яё]).*$/i,
+        // 2-10 символов, возможны цифры, cтрочные и прописные буквы, _-
       },
       email: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
         len: [3, 30],
-        is: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+        is: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
       },
       password: {
         type: Sequelize.TEXT,
         allowNull: false,
-        len: [6, 20],
+        is: /(?=^.{6,15}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+        // 6-15 символов; только латиница
+        // по крайней мере по 1 штуке: цифры,
+        // буквы строчной, буквы заглавной,
+        // символу кроме перечисленных;
+        // без пробелов и новых строк
       },
       avatarPath: {
         type: Sequelize.TEXT,
@@ -38,7 +43,7 @@ module.exports = {
       },
       role: {
         type: Sequelize.TEXT,
-        defaultValue: 'taker',
+        defaultValue: 'taker', // почему не работает?
       },
       isBanned: {
         type: Sequelize.BOOLEAN,

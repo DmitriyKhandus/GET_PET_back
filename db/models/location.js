@@ -8,8 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(Advertisement, { foreignKey: 'locationId' });
     }
   }
+
   Location.init({
-    location: DataTypes.STRING,
+    city: DataTypes.STRING,
+    address: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Location',
