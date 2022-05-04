@@ -11,7 +11,8 @@ const searchRouter = require('./src/routes/searchRouter');
 
 const app = express();
 
-const { PORT, COOKIE_SECRET, COOKIE_NAME } = process.env;
+const { COOKIE_SECRET, COOKIE_NAME } = process.env;
+const PORT = process.env.PORT || 4000; // указан для приёма на порте
 
 app.set('cookieName', COOKIE_NAME);
 
