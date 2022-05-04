@@ -25,8 +25,12 @@ const editUser = async (req, res) => {
 const getUser = async (req, res) => {
   const { id } = req.params;
   try {
-    const currentUser = await User.findByPk(id);
-    res.json(currentUser);
+    const {
+      userName: name, avatarPath, about_user, phone,
+    } = await User.findByPk(id);
+    res.json({
+      userName: name, avatarPath, about_user, phone,
+    });
   } catch (error) {
     res.sendStatus(500);
   }

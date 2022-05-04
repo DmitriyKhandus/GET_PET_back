@@ -32,12 +32,12 @@ const getAllPost = async (req, res) => {
 
 const getAll = async (req, res) => {
   const {
-    speciesId, limit, location, offset, ageMin, ageMax,
+    species, limit, location, offset, ageMin, ageMax,
   } = req.query;
   try {
     const result = await Advertisement.findAll({
       include: [{ model: Location, where: location ? { location } : {} },
-        { model: Species, where: speciesId ? { id: Number(speciesId) } : {} },
+        { model: Species, where: species ? { species } : {} },
         { model: User }],
       where: ageMin ? { age: { [Op.between]: [ageMin, ageMax] } } : {}, // не проверено
       offset: offset || 0,
@@ -50,6 +50,10 @@ const getAll = async (req, res) => {
       name: el.animal_name,
       created: el.createdAt,
       image: el.image,
+      price: el.price,
+      number: el.number,
+      street: el.street,
+      age: el.age,
       location: el.Location.location,
       species: el.Species.species,
       breed: el.breed,
@@ -62,7 +66,7 @@ const getAll = async (req, res) => {
 
 const addPost = async (req, res) => {
   const {
-    animal_name, animal_description, species, breed, price, age, userId, location,
+    animal_name, animal_description, species, breed, price, age, location,
   } = req.body;
   const { id: speciesId } = await Species.findOne({ where: { species } });
   const { id: locationId } = await Location.findOne({ where: { location } });
@@ -73,7 +77,7 @@ const addPost = async (req, res) => {
       animal_description,
       price,
       age,
-      userId, // исправить когда будет фронт
+      userId: req.session.user.id,
       breed,
       speciesId,
       locationId,
@@ -87,10 +91,11 @@ const addPost = async (req, res) => {
 };
 
 const deletePost = async (req, res) => {
-  const { postId, usrId } = req.query;
+  const { id: postId } = req.params;
+  const usrId = req.session.user.id;
   try {
     const { userId } = await Advertisement.findOne({ where: { id: Number(postId) } });
-    if (Number(usrId) !== userId) {
+    if (usrId !== Number(userId)) {
       return res.sendStatus(403);
     }
     await Advertisement.destroy({ where: { id: Number(postId) } });
@@ -99,6 +104,31 @@ const deletePost = async (req, res) => {
   } catch (e) {
     return res.sendStatus(500);
   }
+};
+
+const editPost = async (req, res) => {
+  const { id: postId } = req.params;
+  const usrId = req.session.user.id;
+  try {
+    const { userId } = await Advertisement.findOne({ where: { id: Number(postId) } });
+    if (usrId !== Number(userId)) {
+      return res.sendStatus(403);
+    }
+    let updatedFields = Object.entries(req.body).filter((el) => el[1]);
+    if (updatedFields.length) {
+      updatedFields = Object.fromEntries(updatedFields);
+      const [, updatedUser] = await Advertisement.update(updatedFields, {
+        where: { id: postId },
+        returning: true,
+        plain: true,
+        raw: true,
+      });
+      return res.json(updatedUser);
+    }
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+  return res.sendStatus(501);
 };
 
 const addToFavourites = async (req, res) => {
@@ -113,13 +143,25 @@ const addToFavourites = async (req, res) => {
   return res.sendStatus(200);
 };
 
+const deleteFromFavourites = async (req, res) => {
+  try {
+    await Favorite.destroy(
+      { where: { userId: req.session.user.id, advertisementId: Number(req.params.id) } },
+      {},
+    );
+  } catch (err) {
+    return res.sendStatus(400);
+  }
+  return res.sendStatus(200);
+};
+
 const getAllFavourites = async (req, res) => {
   try {
     const {
       speciesId, limit, location, offset,
     } = req.query;
 
-    let result = await User.findOne({
+    let result = await User.findAll({
       attributes: ['id'],
       where: {
         id: req.session.user.id,
@@ -144,6 +186,7 @@ const getAllFavourites = async (req, res) => {
       id: el.id,
       animal_description: el.animal_description,
       animal_name: el.animal_name,
+      number: el.number,
       breed: el.breed,
       price: el.price,
       age: el.age,
@@ -159,6 +202,49 @@ const getAllFavourites = async (req, res) => {
   }
 };
 
+const getOnePost = async (req, res) => {
+  const { id: postId } = req.params;
+  try {
+    const result = await Advertisement.findAll({
+      include: [{ model: Location },
+        { model: Species },
+        { model: User },
+        { model: Image, attributes: ['image'] }],
+      where: { id: postId },
+      // group: ['advertisementId'],
+
+    });
+    let raw = result.map((x) => x.get({ plain: true }));
+    [raw] = result.map((el) => ({
+      id: el.id,
+      description: el.animal_description,
+      name: el.animal_name,
+      created: el.createdAt,
+      image: el.Images,
+      price: el.price,
+      number: el.number,
+      street: el.street,
+      age: el.age,
+      location: el.Location.location,
+      species: el.Species.species,
+      breed: el.breed,
+    }));
+    // return res.json(raw);
+    console.log(raw);
+    return res.json(raw);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+};
+
 module.exports = {
-  getAllPost, getAll, addPost, deletePost, getAllFavourites, addToFavourites,
+  getAllPost,
+  getAll,
+  addPost,
+  deletePost,
+  getAllFavourites,
+  addToFavourites,
+  deleteFromFavourites,
+  editPost,
+  getOnePost,
 };

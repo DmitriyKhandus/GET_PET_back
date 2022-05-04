@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Messages', {
@@ -6,26 +5,26 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       message_body: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       sender_id: {
         type: Sequelize.INTEGER,
-        references:{
-          model:"Users",
-          key:"id"
+        references: {
+          model: 'Users',
+          key: 'id',
         },
-        onDelete:"CASCADE"
+        onDelete: 'CASCADE',
       },
       receiver_id: {
         type: Sequelize.INTEGER,
-        references:{
-          model:"Users",
-          key:"id"
+        references: {
+          model: 'Users',
+          key: 'id',
         },
-        onDelete:"CASCADE"
+        onDelete: 'CASCADE',
       },
       conversation_id: {
         type: Sequelize.STRING,
@@ -35,15 +34,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Messages');
-  }
+  },
 };

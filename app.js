@@ -3,10 +3,12 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 const FileStore = require('session-file-store')(session);
+const path = require('path');
 
 const authRouter = require('./src/routes/authRouter');
 const usersRouter = require('./src/routes/usersRouter');
-const { searchRouter } = require('./src/routes/searchRouter');
+const { favoriteRouter } = require('./src/routes/favoriteRouter');
+const { postRouter } = require('./src/routes/postRouter');
 
 const app = express();
 
@@ -22,6 +24,7 @@ app.use(
     credentials: true,
   }),
 );
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -42,7 +45,8 @@ app.use(
 // APP'S ROUTES
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
-app.use('/posts', searchRouter);
+app.use('/posts', postRouter);
+app.use('/posts', favoriteRouter);
 
 app.listen(PORT, () => {
   console.log('Сервер запущен на порте', PORT);

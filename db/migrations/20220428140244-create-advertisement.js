@@ -13,9 +13,6 @@ module.exports = {
       animal_description: {
         type: Sequelize.TEXT,
       },
-      image: {
-        type: Sequelize.TEXT,
-      },
       speciesId: {
         type: Sequelize.INTEGER,
         references: {
@@ -32,6 +29,9 @@ module.exports = {
         defaultValue: 0,
       },
       street: {
+        type: Sequelize.STRING,
+      },
+      number: {
         type: Sequelize.STRING,
       },
       age: {
