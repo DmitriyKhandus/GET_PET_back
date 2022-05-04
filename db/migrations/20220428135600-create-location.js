@@ -15,6 +15,12 @@ module.exports = {
       address: {
         type: DataTypes.STRING,
       },
+      Latitude: {
+        type: DataTypes.FLOAT,
+      },
+      Longitude: {
+        type: DataTypes.FLOAT,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
