@@ -38,26 +38,31 @@ const getAll = async (req, res) => {
     const result = await Advertisement.findAll({
       include: [{ model: Location, where: location ? { location } : {} },
         { model: Species, where: species ? { species } : {} },
-        { model: User }],
+        { model: User },
+        { model: Image, attributes: ['image'] }],
       where: ageMin ? { age: { [Op.between]: [ageMin, ageMax] } } : {}, // не проверено
       offset: offset || 0,
       limit: limit || 20,
     });
+    console.log(result);
     let raw = result.map((x) => x.get({ plain: true }));
-    raw = result.map((el) => ({
-      id: el.id,
-      description: el.animal_description,
-      name: el.animal_name,
-      created: el.createdAt,
-      image: el.image,
-      price: el.price,
-      number: el.number,
-      street: el.street,
-      age: el.age,
-      location: el.Location.location,
-      species: el.Species.species,
-      breed: el.breed,
-    }));
+    raw = result.map((el) => {
+      const images = el.Images.map((elem) => elem.image);
+      return {
+        id: el.id,
+        description: el.animal_description,
+        name: el.animal_name,
+        created: el.createdAt,
+        images,
+        price: el.price,
+        number: el.number,
+        street: el.street,
+        age: el.age,
+        location: el.Location.location,
+        species: el.Species.species,
+        breed: el.breed,
+      };
+    });
     return res.json(raw);
   } catch (error) {
     return res.sendStatus(500);
@@ -215,20 +220,23 @@ const getOnePost = async (req, res) => {
 
     });
     let raw = result.map((x) => x.get({ plain: true }));
-    [raw] = result.map((el) => ({
-      id: el.id,
-      description: el.animal_description,
-      name: el.animal_name,
-      created: el.createdAt,
-      image: el.Images,
-      price: el.price,
-      number: el.number,
-      street: el.street,
-      age: el.age,
-      location: el.Location.location,
-      species: el.Species.species,
-      breed: el.breed,
-    }));
+    [raw] = result.map((el) => {
+      const images = el.Images.map((elem) => elem.image);
+      return ({
+        id: el.id,
+        description: el.animal_description,
+        name: el.animal_name,
+        created: el.createdAt,
+        images,
+        price: el.price,
+        number: el.number,
+        street: el.street,
+        age: el.age,
+        location: el.Location.location,
+        species: el.Species.species,
+        breed: el.breed,
+      });
+    });
     // return res.json(raw);
     console.log(raw);
     return res.json(raw);
