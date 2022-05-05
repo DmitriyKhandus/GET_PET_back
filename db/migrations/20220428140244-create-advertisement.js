@@ -9,11 +9,14 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      animalName: {
+      title: {
         type: DataTypes.STRING,
       },
       animalDescription: {
         type: DataTypes.TEXT,
+      },
+      age: {
+        type: DataTypes.FLOAT,
       },
       image: {
         type: DataTypes.TEXT,
@@ -33,11 +36,8 @@ module.exports = {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
-      address: {
+      phoneNumber: {
         type: DataTypes.STRING,
-      },
-      age: {
-        type: DataTypes.FLOAT,
       },
       userId: {
         type: DataTypes.INTEGER,

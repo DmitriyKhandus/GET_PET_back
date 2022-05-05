@@ -30,7 +30,6 @@ const signUp = async (req, res) => {
 
 const signIn = async (req, res) => {
   const { password, email } = req.body;
-
   if (password && email) {
     try {
       const currentUser = await User.findOne({ where: { email } }); // а какой email?
@@ -43,12 +42,11 @@ const signIn = async (req, res) => {
 
         return res.json({ id: currentUser.id, name: currentUser.name });
       }
-      return res.sendStatus(401);
+      return res.sendStatus(400);
     } catch (error) {
       return res.sendStatus(500);
     }
   }
-
   return res.sendStatus(400);
 };
 
