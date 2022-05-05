@@ -47,5 +47,5 @@ app.use('/posts', postRouter);
 app.use('/posts', favoriteRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server is started on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
