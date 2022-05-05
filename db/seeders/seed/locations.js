@@ -1,6 +1,8 @@
 const locations = [{
   city: 'Москва',
   address: 'ул. Вавилова, 5',
+  latitude: 55.761469,
+  longitude: 37.655561,
   createdAt: new Date(),
   updatedAt: new Date(),
 },
