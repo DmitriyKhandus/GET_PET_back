@@ -3,25 +3,28 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 const FileStore = require('session-file-store')(session);
+const path = require('path');
 
 const authRouter = require('./src/routes/authRouter');
 const usersRouter = require('./src/routes/usersRouter');
-
-const searchRouter = require('./src/routes/searchRouter');
+const { favoriteRouter } = require('./src/routes/favoriteRouter');
+const { postRouter } = require('./src/routes/postRouter');
 
 const app = express();
 
-const { COOKIE_SECRET, COOKIE_NAME } = process.env;
-const PORT = process.env.PORT || 4000; // указан для приёма на порте
+const { PORT, COOKIE_SECRET, COOKIE_NAME } = process.env;
 
+// SERVER'S SETTINGS
 app.set('cookieName', COOKIE_NAME);
 
+// APP'S MIDDLEWARES
 app.use(
   cors({
     origin: true,
     credentials: true,
   }),
 );
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -34,15 +37,17 @@ app.use(
     cookie: {
       secure: false,
       httpOnly: true,
-      maxAge: 1e3 * 86400,
+      maxAge: 1e3 * 86400, // COOKIE'S LIFETIME — 1 DAY
     },
   }),
 );
 
+// APP'S ROUTES
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
-app.use('/posts', searchRouter);
+app.use('/posts', postRouter);
+app.use('/posts', favoriteRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server is started on port ${PORT}`);
+  console.log('Сервер запущен на порте', PORT);
 });

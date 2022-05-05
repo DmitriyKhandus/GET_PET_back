@@ -9,6 +9,6 @@ const usersRouter = Router();
 usersRouter.get('/', checkAuth, usersController.getAllUsers);
 usersRouter.route('/:id')
   .patch(upload.single('file'), checkAuth, checkAuthor, usersController.editUser)
-  .get(checkAuth, usersController.getUser);
+  .get(usersController.getUser);
 
 module.exports = usersRouter;

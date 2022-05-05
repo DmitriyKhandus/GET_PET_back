@@ -1,22 +1,20 @@
-const { DataTypes } = require('sequelize');
-
 module.exports = {
-  async up(queryInterface) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Comments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
       },
       title: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
       },
       text: {
-        type: DataTypes.TEXT,
+        type: Sequelize.TEXT,
       },
       userId: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Users',
           key: 'id',
@@ -24,7 +22,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       advertisementId: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Advertisements',
           key: 'id',
@@ -33,15 +31,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: DataTypes.DATE,
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: DataTypes.DATE,
+        type: Sequelize.DATE,
       },
     });
   },
-  async down(queryInterface) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Comments');
   },
 };
