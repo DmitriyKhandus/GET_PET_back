@@ -12,8 +12,8 @@ module.exports = {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
-        is: /(?=^.{2,10}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[А-ЯЁа-яё]).*$/i,
+        // unique: true,
+        len: [2, 15],
         // 2-10 символов, возможны цифры, cтрочные и прописные буквы, _-
       },
       email: {
@@ -36,7 +36,7 @@ module.exports = {
       avatarPath: {
         type: DataTypes.TEXT,
       },
-      phone: {
+      phoneNumber: {
         type: DataTypes.TEXT,
         unique: true,
         is: /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
@@ -66,7 +66,7 @@ module.exports = {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      remember_token: {
+      rememberToken: {
         type: DataTypes.STRING,
         // allowNull: false,
       },

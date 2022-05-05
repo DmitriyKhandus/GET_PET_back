@@ -3,32 +3,33 @@ const {
   Advertisement, Species, Image, User, Location, Favorite,
 } = require('../../db/models');
 
-const getAllPost = async (req, res) => {
-  // if (userName && password && email) {
-  try {
-    const result = await Advertisement.findAll({
-      include: [{ model: Location },
-        { model: Species },
-        { model: User }],
-      raw: true,
-    });
-    const raw = result.map((el) => ({
-      id: el.id,
-      description: el.animal_description,
-      name: el.animal_name,
-      created: el.createdAt,
-      image: el.image,
-      location: el['Location.location'],
-      species: el['Species.species'],
-      breed: el['Breed.breed'],
-    }));
-    console.log(raw);
-    return res.json(result);
-  } catch (error) {
-    return res.sendStatus(500);
-  }
-  // }
-};
+// const getAllPost = async (req, res) => {
+//   // if (name && password && email) {
+//   try {
+//     const result = await Advertisement.findAll({
+//       include: [{ model: Location },
+//         { model: Species },
+//         { model: User }],
+//       raw: true,
+//     });
+//     const raw = result.map((el) => ({
+//       id: el.id,
+//       title: el.title,
+//       description: el.animalDescription,
+//       age:el.age,
+//       species: el['Species.species'],
+//       breed: el['Breed.breed'],
+//       image: el.image,
+//       location: el['Location.location'],
+//       created: el.createdAt,
+//     }));
+//     console.log(raw);
+//     return res.json(result);
+//   } catch (error) {
+//     return res.sendStatus(500);
+//   }
+//   // }
+// };
 
 const getAll = async (req, res) => {
   const {
@@ -50,17 +51,16 @@ const getAll = async (req, res) => {
       const images = el.Images.map((elem) => elem.image);
       return {
         id: el.id,
-        description: el.animal_description,
-        name: el.animal_name,
-        created: el.createdAt,
-        images,
-        price: el.price,
-        number: el.number,
-        street: el.street,
+        title: el.title,
+        animalDescription: el.animalDescription,
         age: el.age,
-        location: el.Location.location,
+        images,
         species: el.Species.species,
         breed: el.breed,
+        price: el.price, // userId??
+        phoneNumber: el.phoneNumber,
+        location: el.Location.location,
+        created: el.createdAt,
       };
     });
     return res.json(raw);
@@ -71,24 +71,24 @@ const getAll = async (req, res) => {
 
 const addPost = async (req, res) => {
   const {
-    animal_name, animal_description, species, breed, price, age, location,
+    title, animalDescription, species, breed, price, age, location,
   } = req.body;
   const { id: speciesId } = await Species.findOne({ where: { species } });
   const { id: locationId } = await Location.findOne({ where: { location } });
   // const image = `/img/${req.file.originalname}`;
   if (speciesId && locationId) {
     const result = await Advertisement.create({
-      animal_name,
-      animal_description,
-      price,
-      age,
       userId: req.session.user.id,
-      breed,
+      title,
+      animalDescription,
+      age,
       speciesId,
+      breed,
+      price,
       locationId,
     }, {});
     const images = req.files.map((el) => ({ advertisementId: result.id, image: el.path.slice(6) }));
-    for (let i = 0; i < images.length; i++) {
+    for (let i = 0; i < images.length; i += 1) {
       await Image.create(images[i], {});
     }
     res.sendStatus(200);
@@ -181,7 +181,7 @@ const getAllFavourites = async (req, res) => {
           attributes: ['species'],
           model: Species,
         }, {
-          attributes: ['location'],
+          attributes: ['city'],
           model: Location,
         }],
       },
@@ -189,16 +189,16 @@ const getAllFavourites = async (req, res) => {
     });
     result = result.Advertisements.map((el) => ({
       id: el.id,
-      animal_description: el.animal_description,
-      animal_name: el.animal_name,
-      number: el.number,
-      breed: el.breed,
-      price: el.price,
+      title: el.title,
+      animalDescription: el.animalDescription,
       age: el.age,
       images: el.Images,
-      street: el.street,
       species: el.Species.species,
-      location: el.Location.location,
+      breed: el.breed,
+      price: el.price,
+      phoneNumber: el.phoneNumber,
+      city: el.Location.city,
+      address: el.Location.address,
     }));
 
     return res.json(result);
@@ -224,17 +224,17 @@ const getOnePost = async (req, res) => {
       const images = el.Images.map((elem) => elem.image);
       return ({
         id: el.id,
+        title: el.title,
         description: el.animal_description,
-        name: el.animal_name,
-        created: el.createdAt,
-        images,
-        price: el.price,
-        number: el.number,
-        street: el.street,
         age: el.age,
-        location: el.Location.location,
+        images,
         species: el.Species.species,
         breed: el.breed,
+        price: el.price,
+        phoneNumber: el.phoneNumber,
+        city: el.city,
+        address: el.Location.address,
+        created: el.createdAt,
       });
     });
     // return res.json(raw);
@@ -246,7 +246,7 @@ const getOnePost = async (req, res) => {
 };
 
 module.exports = {
-  getAllPost,
+  // getAllPost,
   getAll,
   addPost,
   deletePost,

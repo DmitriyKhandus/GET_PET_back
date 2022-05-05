@@ -1,20 +1,28 @@
+const { DataTypes } = require('sequelize');
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.createTable('Advertisements', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
       },
-      animal_name: {
-        type: Sequelize.STRING,
+      title: {
+        type: DataTypes.STRING,
       },
-      animal_description: {
-        type: Sequelize.TEXT,
+      animalDescription: {
+        type: DataTypes.TEXT,
+      },
+      age: {
+        type: DataTypes.FLOAT,
+      },
+      image: {
+        type: DataTypes.TEXT,
       },
       speciesId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'Species',
           key: 'id',
@@ -22,31 +30,25 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       breed: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       price: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         defaultValue: 0,
       },
-      street: {
-        type: Sequelize.STRING,
-      },
-      number: {
-        type: Sequelize.STRING,
-      },
-      age: {
-        type: Sequelize.FLOAT,
-      },
       userId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'Users',
           key: 'id',
         },
         onDelete: 'CASCADE',
       },
+      phoneNumber: {
+        type: DataTypes.STRING,
+      },
       locationId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'Locations',
           key: 'id',
@@ -55,15 +57,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Advertisements');
   },
 };

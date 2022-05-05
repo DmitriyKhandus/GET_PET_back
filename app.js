@@ -12,12 +12,11 @@ const { postRouter } = require('./src/routes/postRouter');
 
 const app = express();
 
-const { PORT, COOKIE_SECRET, COOKIE_NAME } = process.env;
+const { COOKIE_SECRET, COOKIE_NAME } = process.env;
+const PORT = process.env.PORT || 4000;
 
-// SERVER'S SETTINGS
 app.set('cookieName', COOKIE_NAME);
 
-// APP'S MIDDLEWARES
 app.use(
   cors({
     origin: true,
@@ -37,17 +36,16 @@ app.use(
     cookie: {
       secure: false,
       httpOnly: true,
-      maxAge: 1e3 * 86400, // COOKIE'S LIFETIME — 1 DAY
+      maxAge: 1e3 * 86400,
     },
   }),
 );
 
-// APP'S ROUTES
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postRouter);
 app.use('/posts', favoriteRouter);
 
 app.listen(PORT, () => {
-  console.log('Сервер запущен на порте', PORT);
+  console.log(`Server is running on port ${PORT}`);
 });
