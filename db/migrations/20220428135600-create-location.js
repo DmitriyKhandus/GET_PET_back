@@ -15,10 +15,10 @@ module.exports = {
       address: {
         type: DataTypes.STRING,
       },
-      Latitude: {
+      latitude: {
         type: DataTypes.FLOAT,
       },
-      Longitude: {
+      longitude: {
         type: DataTypes.FLOAT,
       },
       createdAt: {

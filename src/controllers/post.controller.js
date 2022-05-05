@@ -51,13 +51,13 @@ const getAll = async (req, res) => {
       const images = el.Images.map((elem) => elem.image);
       return {
         id: el.id,
-        tile: el.title,
+        title: el.title,
         animalDescription: el.animalDescription,
         age: el.age,
+        images,
         species: el.Species.species,
         breed: el.breed,
-        images,
-        price: el.price,
+        price: el.price, // userId??
         phoneNumber: el.phoneNumber,
         location: el.Location.location,
         created: el.createdAt,
@@ -78,13 +78,13 @@ const addPost = async (req, res) => {
   // const image = `/img/${req.file.originalname}`;
   if (speciesId && locationId) {
     const result = await Advertisement.create({
+      userId: req.session.user.id,
       title,
       animalDescription,
-      price,
       age,
-      userId: req.session.user.id,
-      breed,
       speciesId,
+      breed,
+      price,
       locationId,
     }, {});
     const images = req.files.map((el) => ({ advertisementId: result.id, image: el.path.slice(6) }));
@@ -192,10 +192,10 @@ const getAllFavourites = async (req, res) => {
       title: el.title,
       animalDescription: el.animalDescription,
       age: el.age,
+      images: el.Images,
       species: el.Species.species,
       breed: el.breed,
       price: el.price,
-      images: el.Images,
       phoneNumber: el.phoneNumber,
       city: el.Location.city,
       address: el.Location.address,
@@ -226,15 +226,15 @@ const getOnePost = async (req, res) => {
         id: el.id,
         title: el.title,
         description: el.animal_description,
-        images,
-        price: el.price,
-        number: el.number,
-        street: el.street,
         age: el.age,
+        images,
         species: el.Species.species,
         breed: el.breed,
+        price: el.price,
+        phoneNumber: el.phoneNumber,
+        city: el.city,
+        address: el.Location.address,
         created: el.createdAt,
-        location: el.Location.location,
       });
     });
     // return res.json(raw);
@@ -246,7 +246,7 @@ const getOnePost = async (req, res) => {
 };
 
 module.exports = {
-  //getAllPost,
+  // getAllPost,
   getAll,
   addPost,
   deletePost,

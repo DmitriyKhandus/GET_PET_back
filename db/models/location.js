@@ -12,8 +12,8 @@ module.exports = (sequelize) => {
   Location.init({
     city: DataTypes.STRING,
     address: DataTypes.STRING,
-    Latitude: DataTypes.FLOAT,
-    Longitude: DataTypes.FLOAT,
+    latitude: DataTypes.FLOAT,
+    longitude: DataTypes.FLOAT,
   }, {
     sequelize,
     modelName: 'Location',

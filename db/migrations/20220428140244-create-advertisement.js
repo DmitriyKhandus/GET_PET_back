@@ -36,9 +36,6 @@ module.exports = {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
-      phoneNumber: {
-        type: DataTypes.STRING,
-      },
       userId: {
         type: DataTypes.INTEGER,
         references: {
@@ -46,6 +43,9 @@ module.exports = {
           key: 'id',
         },
         onDelete: 'CASCADE',
+      },
+      phoneNumber: {
+        type: DataTypes.STRING,
       },
       locationId: {
         type: DataTypes.INTEGER,
