@@ -165,7 +165,6 @@ const getAllFavourites = async (req, res) => {
     const {
       speciesId, limit, location, offset,
     } = req.query;
-
     let result = await User.findAll({
       attributes: ['id'],
       where: {
@@ -187,22 +186,27 @@ const getAllFavourites = async (req, res) => {
       },
 
     });
-    result = result.Advertisements.map((el) => ({
-      id: el.id,
-      title: el.title,
-      animalDescription: el.animalDescription,
-      age: el.age,
-      images: el.Images,
-      species: el.Species.species,
-      breed: el.breed,
-      price: el.price,
-      phoneNumber: el.phoneNumber,
-      city: el.Location.city,
-      address: el.Location.address,
-    }));
+    console.log(result);
+    result = result[0].Advertisements.map((el) => {
+      const images = el.Images.map((elem) => elem.image);
+      return {
+        id: el.id,
+        title: el.title,
+        animalDescription: el.animalDescription,
+        age: el.age,
+        images,
+        species: el.Species.species,
+        breed: el.breed,
+        price: el.price,
+        phoneNumber: el.phoneNumber,
+        city: el.Location.city,
+        address: el.Location.address,
+      };
+    });
 
     return res.json(result);
   } catch (err) {
+    console.log(err);
     return res.sendStatus(500);
   }
 };
