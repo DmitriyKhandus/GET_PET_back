@@ -1,6 +1,5 @@
 const locations = [{
   city: 'Москва',
-  address: 'ул. Вавилова, 5',
   createdAt: new Date(),
   updatedAt: new Date(),
 },
@@ -25,7 +24,17 @@ const locations = [{
   updatedAt: new Date(),
 },
 {
+  city: 'Нижний Новгород',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+},
+{
   city: 'Челябинск',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+},
+{
+  city: 'Омск',
   createdAt: new Date(),
   updatedAt: new Date(),
 },
@@ -35,7 +44,32 @@ const locations = [{
   updatedAt: new Date(),
 },
 {
-  city: 'Омск',
+  city: 'Ростов-на-Дону',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+},
+{
+  city: 'Уфа',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+},
+{
+  city: 'Красноярск',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+},
+{
+  city: 'Пермь',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+},
+{
+  city: 'Воронеж',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+},
+{
+  city: 'Волгоград',
   createdAt: new Date(),
   updatedAt: new Date(),
 },
