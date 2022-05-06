@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../../db/models');
+const { CustomError } = require('../middlewares/errorsMv');
 
-const signUp = async (req, res) => {
+const signUp = async (req, res, next) => {
   const { name, password, email } = req.body;
-
   if (name && password && email) {
     try {
       const secretPass = await bcrypt.hash(password, Number(process.env.ROUNDS_HASH));
@@ -12,27 +12,24 @@ const signUp = async (req, res) => {
         password: secretPass,
         email,
       });
-
       req.session.user = {
         id: newUser.id,
         name: newUser.name,
 
       };
-
       return res.json({ id: newUser.id, name: newUser.name });
     } catch (error) {
-      return res.sendStatus(500);
+      return next(CustomError.internalError());
     }
   }
-
-  return res.sendStatus(400);
+  return next(CustomError.badRequest('Ошибка ввода данных'));
 };
 
-const signIn = async (req, res) => {
+const signIn = async (req, res, next) => {
   const { password, email } = req.body;
   if (password && email) {
     try {
-      const currentUser = await User.findOne({ where: { email } }); // а какой email?
+      const currentUser = await User.findOne({ where: { email } });
       const isValidPassword = await bcrypt.compare(password, currentUser.password);
       if (currentUser && isValidPassword) {
         req.session.user = {
@@ -42,20 +39,17 @@ const signIn = async (req, res) => {
 
         return res.json({ id: currentUser.id, name: currentUser.name });
       }
-      return res.sendStatus(400);
     } catch (error) {
       return res.sendStatus(500);
     }
   }
-  return res.sendStatus(400);
+  return next(CustomError.internalError());
 };
 
 const signOut = async (req, res) => {
   req.session.destroy((err) => {
     if (err) return res.sendStatus(500);
-
     res.clearCookie(req.app.get('cookieName'));
-
     return res.sendStatus(200);
   });
 };
