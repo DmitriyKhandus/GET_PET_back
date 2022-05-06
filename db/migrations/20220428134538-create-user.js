@@ -11,22 +11,28 @@ module.exports = {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
-        // unique: true,
-        len: [2, 15],
-        // 2-10 символов, возможны цифры, cтрочные и прописные буквы, _-
+        validate: {
+          allowNull: false,
+          // unique: true,
+          len: [2, 15],
+          // 2-10 символов, возможны цифры, cтрочные и прописные буквы, _-
+        },
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        len: [3, 30],
-        is: /^[A-Z\d._%+-]+@[A-Z\d.-]+\.[A-Z]{2,4}$/i,
+        validate: {
+          allowNull: false,
+          unique: true,
+          len: [3, 30],
+          is: /^[A-Z\d._%+-]+@[A-Z\d.-]+\.[A-Z]{2,4}$/i,
+        },
       },
       password: {
         type: DataTypes.TEXT,
-        allowNull: false,
-        is: /(?=^.{6,15}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+        validate: {
+          allowNull: false,
+          is: /(?=^.{6,15}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+        },
         // 6-15 символов; только латиница
         // по крайней мере по 1 штуке: цифры,
         // буквы строчной, буквы заглавной,

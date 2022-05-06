@@ -11,9 +11,29 @@ module.exports = (sequelize) => {
   }
 
   User.init({
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.TEXT,
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        len: [2, 15],
+        // 2-10 символов, возможны цифры, cтрочные и прописные буквы, _-
+      },
+    },
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        allowNull: false,
+        unique: true,
+        len: [3, 30],
+        is: /^[A-Z\d._%+-]+@[A-Z\d.-]+\.[A-Z]{2,4}$/i,
+      },
+    },
+    password: {
+      type: DataTypes.TEXT,
+      validate: {
+        allowNull: false,
+        is: /(?=^.{6,15}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+      },
+    },
     avatarPath: DataTypes.TEXT,
     phoneNumber: DataTypes.STRING,
     aboutUser: DataTypes.TEXT,
