@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../../db/models');
-const { CustomError } = require('../middlewares/errorsMv');
+const { CustomError } = require('../error/errors');
 
 const signUp = async (req, res, next) => {
   const { name, password, email } = req.body;
@@ -19,7 +19,7 @@ const signUp = async (req, res, next) => {
       };
       return res.json({ id: newUser.id, name: newUser.name });
     } catch (error) {
-      return next(CustomError.internalError());
+      return next(CustomError.internalError('Пользователь не может быть создан с таким email'));
     }
   }
   return next(CustomError.badRequest('Ошибка ввода данных'));

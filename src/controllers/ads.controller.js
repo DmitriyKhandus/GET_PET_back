@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const {
   Advertisement, Species, Image, User, Favorite,
 } = require('../../db/models');
-const { CustomError } = require('../middlewares/errorsMv');
+const { CustomError } = require('../error/errors');
 const mapHelper = require('../helpers/mapHelper');
 
 const getAllAds = async (req, res) => {
@@ -143,7 +143,7 @@ const deleteFromFavourites = async (req, res) => {
 const getAllFavourites = async (req, res) => {
   try {
     const {
-      userId, speciesId, limit, offset,
+      speciesId, limit, offset,
     } = req.query;
     let result = await User.findAll({
       attributes: ['id'],
@@ -163,7 +163,7 @@ const getAllFavourites = async (req, res) => {
       },
 
     });
-    console.log(result);
+    // console.log('getAllFavourites joined result', result);
     result = result[0].Advertisements.map((el) => {
       const images = el.Images.map((elem) => elem.image);
       return {
@@ -182,8 +182,8 @@ const getAllFavourites = async (req, res) => {
     });
 
     return res.json(result);
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     return res.sendStatus(500);
   }
 };
@@ -218,7 +218,7 @@ const getAd = async (req, res) => {
         created: el.createdAt,
       });
     });
-    // console.log(raw);
+    // console.log('getAd raw', raw);
     return res.json(raw);
   } catch (error) {
     return res.sendStatus(500);
