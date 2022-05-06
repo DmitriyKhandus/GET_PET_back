@@ -8,9 +8,9 @@ const ErrorHandler = require('./src/middlewares/errorsMv');
 
 const authRouter = require('./src/routes/authRouter');
 const usersRouter = require('./src/routes/usersRouter');
-const { favoriteRouter } = require('./src/routes/favoriteRouter');
-const { postRouter } = require('./src/routes/postRouter');
-const { tipsRouter } = require('./src/routes/tipsRouter');
+const favoritesRouter = require('./src/routes/favoritesRouter');
+const adsRouter = require('./src/routes/adsRouter');
+const tipsRouter = require('./src/routes/tipsRouter');
 
 const app = express();
 
@@ -45,11 +45,12 @@ app.use(
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
-app.use('/posts/favorites', favoriteRouter);
-app.use('/posts', postRouter);
+app.use('/ads', adsRouter);
+app.use('/ads/favorites', favoritesRouter);
 app.use('/tips', tipsRouter);
 app.use(ErrorHandler);
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`Server is running on port ${PORT}`);
 });

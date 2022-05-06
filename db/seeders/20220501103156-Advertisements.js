@@ -5,7 +5,6 @@ module.exports = {
       animalDescription: 'Мини пиг, торг уместен',
       speciesId: 9,
       userId: 1,
-      locationId: 1,
       price: 10000,
       phoneNumber: 89105010854,
       city: 'Москва',

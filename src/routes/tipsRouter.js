@@ -5,4 +5,4 @@ const tipsRouter = Router();
 
 tipsRouter.route('/').get(getAllTips);
 
-module.exports = { tipsRouter };
+module.exports = tipsRouter;

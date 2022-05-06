@@ -1,16 +1,17 @@
 const { Op } = require('sequelize');
 const {
-  Advertisement, Species, Image, User, Location, Favorite,
+  Advertisement, Species, Image, User, Favorite,
 } = require('../../db/models');
 const { CustomError } = require('../middlewares/errorsMv');
+const mapHelper = require('../helpers/mapHelper');
 
-const getAll = async (req, res) => {
+const getAllAds = async (req, res) => {
   const {
-    species, limit, location, offset, ageMin, ageMax,
+    species, limit, offset, ageMin, ageMax,
   } = req.query;
   try {
     const result = await Advertisement.findAll({
-      include: [{ model: Location, where: location ? { location } : {} },
+      include: [
         { model: Species, where: species ? { species } : {} },
         { model: User },
         { model: Image, attributes: ['image'] }],
@@ -29,9 +30,10 @@ const getAll = async (req, res) => {
         images,
         species: el.Species.species,
         breed: el.breed,
-        price: el.price, // userId??
+        price: el.price,
         phoneNumber: el.phoneNumber,
-        location: el.Location.location,
+        city: el.city,
+        address: el.address,
         created: el.createdAt,
       };
     });
@@ -41,13 +43,12 @@ const getAll = async (req, res) => {
   }
 };
 
-const addPost = async (req, res) => {
+const addAd = async (req, res) => {
   const {
-    title, animalDescription, species, breed, price, age, location,
+    title, animalDescription, species, breed, price, age, city, address,
   } = req.body;
   const { id: speciesId } = await Species.findOne({ where: { species } });
-  const { id: locationId } = await Location.findOne({ where: { location } });
-  if (speciesId && locationId) {
+  if (speciesId) {
     const result = await Advertisement.create({
       userId: req.session.user.id,
       title,
@@ -56,7 +57,8 @@ const addPost = async (req, res) => {
       speciesId,
       breed,
       price,
-      locationId,
+      city,
+      address,
     }, {});
     const images = req.files.map((el) => ({ advertisementId: result.id, image: el.path.slice(6) }));
     for (let i = 0; i < images.length; i += 1) {
@@ -66,27 +68,34 @@ const addPost = async (req, res) => {
   } else res.sendStatus(400);
 };
 
-const deletePost = async (req, res) => {
-  const { id: postId } = req.params;
+// MAP
+// const category_id = convertCategoryId(category);
+// const coordinates = await mapHelper({ city, address });
+// console.log(coordinates);
+// const updatePostWithCoordinates =
+// MAP
+
+const deleteAd = async (req, res) => {
+  const { id: adId } = req.params;
   const usrId = req.session.user.id;
   try {
-    const { userId } = await Advertisement.findOne({ where: { id: Number(postId) } });
+    const { userId } = await Advertisement.findOne({ where: { id: Number(adId) } });
     if (usrId !== Number(userId)) {
       return res.sendStatus(403);
     }
-    await Advertisement.destroy({ where: { id: Number(postId) } });
-    await Image.destroy({ where: { id: Number(postId) } });
+    await Advertisement.destroy({ where: { id: Number(adId) } });
+    await Image.destroy({ where: { id: Number(adId) } });
     return res.sendStatus(200);
   } catch (e) {
     return res.sendStatus(500);
   }
 };
 
-const editPost = async (req, res, next) => {
-  const { id: postId } = req.params;
+const editAd = async (req, res) => {
+  const { id: adId } = req.params;
   const usrId = req.session.user.id;
   try {
-    const { userId } = await Advertisement.findOne({ where: { id: Number(postId) } });
+    const { userId } = await Advertisement.findOne({ where: { id: Number(adId) } });
     if (usrId !== Number(userId)) {
       return next(CustomError.forbiddenError('Нет прав доступа к объявлению'));
     }
@@ -94,7 +103,7 @@ const editPost = async (req, res, next) => {
     if (updatedFields.length) {
       updatedFields = Object.fromEntries(updatedFields);
       const [, updatedUser] = await Advertisement.update(updatedFields, {
-        where: { id: postId },
+        where: { id: adId },
         returning: true,
         plain: true,
         raw: true,
@@ -134,7 +143,7 @@ const deleteFromFavourites = async (req, res) => {
 const getAllFavourites = async (req, res) => {
   try {
     const {
-      speciesId, limit, location, offset,
+      userId, speciesId, limit, offset,
     } = req.query;
     let result = await User.findAll({
       attributes: ['id'],
@@ -150,9 +159,6 @@ const getAllFavourites = async (req, res) => {
         }, {
           attributes: ['species'],
           model: Species,
-        }, {
-          attributes: ['city'],
-          model: Location,
         }],
       },
 
@@ -170,8 +176,8 @@ const getAllFavourites = async (req, res) => {
         breed: el.breed,
         price: el.price,
         phoneNumber: el.phoneNumber,
-        city: el.Location.city,
-        address: el.Location.address,
+        city: el.city,
+        address: el.address,
       };
     });
 
@@ -182,15 +188,15 @@ const getAllFavourites = async (req, res) => {
   }
 };
 
-const getOnePost = async (req, res) => {
-  const { id: postId } = req.params;
+const getAd = async (req, res) => {
+  const { id: adId } = req.params;
   try {
     const result = await Advertisement.findAll({
-      include: [{ model: Location },
+      include: [
         { model: Species },
         { model: User },
         { model: Image, attributes: ['image'] }],
-      where: { id: postId },
+      where: { id: adId },
       // group: ['advertisementId'],
 
     });
@@ -200,7 +206,7 @@ const getOnePost = async (req, res) => {
       return ({
         id: el.id,
         title: el.title,
-        description: el.animal_description,
+        animalDescription: el.animalDescription,
         age: el.age,
         images,
         species: el.Species.species,
@@ -212,8 +218,7 @@ const getOnePost = async (req, res) => {
         created: el.createdAt,
       });
     });
-    // return res.json(raw);
-    console.log(raw);
+    // console.log(raw);
     return res.json(raw);
   } catch (error) {
     return res.sendStatus(500);
@@ -222,12 +227,13 @@ const getOnePost = async (req, res) => {
 
 module.exports = {
   // getAllPost,
-  getAll,
-  addPost,
-  deletePost,
+  getAllAds,
+  addAd,
+  deleteAd,
   getAllFavourites,
   addToFavourites,
   deleteFromFavourites,
-  editPost,
-  getOnePost,
+  editAd,
+  getAd,
+  // updateAdWithCoordinates,
 };

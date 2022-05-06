@@ -8,4 +8,4 @@ multerRouter.post('/', upload.single('file'), (req, res) => {
   res.sendStatus(200);
 });
 
-module.exports = { multerRouter };
+module.exports = multerRouter;
