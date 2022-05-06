@@ -144,6 +144,36 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      advertisementId: 10,
+      image: '/img/25.png',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      advertisementId: 10,
+      image: '/img/26.png',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      advertisementId: 11,
+      image: '/img/27.png',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      advertisementId: 11,
+      image: '/img/28.png',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      advertisementId: 11,
+      image: '/img/29.png',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
 
     ], {});
   },

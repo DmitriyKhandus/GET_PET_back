@@ -1,6 +1,7 @@
 const { User } = require('../../db/models');
+const { CustomError } = require('../error/errors');
 
-const editUser = async (req, res) => {
+const editUser = async (req, res, next) => {
   console.log(req.file);
   let updatedFields = Object.entries(req.body).filter((el) => el[1]);
   if (updatedFields.length) {
@@ -15,30 +16,32 @@ const editUser = async (req, res) => {
       });
       return res.json(updatedUser);
     } catch (error) {
-      return res.sendStatus(500);
+      return next(CustomError.internalError());
     }
   }
-  return res.sendStatus(418);
+  return next(CustomError.badRequest('Ошибка ввода данных'));
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const obj = await User.findByPk(id, { attributes: [['userName', 'user'], 'avatarPath', 'about_user', 'phone'] });
-    res.json(
+    const obj = await User.findByPk(id, { attributes: ['name', 'avatarPath', 'aboutUser', 'email', 'phoneNumber'] });
+    console.log(obj);
+    if (obj === null) { return next(CustomError.badRequest('Пользователь не найден')); }
+    return res.json(
       obj,
     );
   } catch (error) {
-    res.sendStatus(500);
+    return next(CustomError.internalError());
   }
 };
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res, next) => {
   try {
     const allUsers = await User.findAll();
     return res.json(allUsers);
   } catch (error) {
-    return res.sendStatus(500);
+    return next(CustomError.internalError());
   }
 };
 
