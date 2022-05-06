@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const {
   Advertisement, Species, Image, User, Location, Favorite,
 } = require('../../db/models');
-const { CustomError } = require('../middlewares/errorsMv');
+const { CustomError } = require('../error/errors');
 
 const getAll = async (req, res) => {
   const {
