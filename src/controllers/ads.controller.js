@@ -34,6 +34,8 @@ const getAllAds = async (req, res) => {
         phoneNumber: el.phoneNumber,
         city: el.city,
         address: el.address,
+        latitude: el.latitude,
+        longitude: el.longitude,
         created: el.createdAt,
       };
     });
@@ -72,6 +74,11 @@ const addAd = async (req, res) => {
     res.json(newAd);
     res.sendStatus(200);
   } else res.sendStatus(400);
+};
+
+const getAllSpecies = async (req, res) => { // почему не работает?
+  const species = await Species.findAll();
+  res.json(species);
 };
 
 const deleteAd = async (req, res) => {
@@ -229,6 +236,7 @@ const getAd = async (req, res) => {
 module.exports = {
   getAllAds,
   addAd,
+  getAllSpecies,
   deleteAd,
   getAllFavourites,
   addToFavourites,

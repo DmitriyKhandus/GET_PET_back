@@ -1,59 +1,53 @@
 // const axios = require('axios')
-// const fetch = require('node-fetch');
+const fetch = require('node-fetch');
 
-const strToArr = (input, params) => {
-  const convertedInputForAPI = input.split(',').join('').split('.').join('')
+const convertInputForAPI = (inputedAddress, params) => {
+  const inputArr = inputedAddress.split(',').join('').split('.').join('')
     .split(' ');
-  console.log('Finaly arr', convertedInputForAPI);
-  let cityStreet = [];
-  let homeNum;
+  const addressTextArr = [];
+  let homeNumber;
   if (params === '%20') {
-    convertedInputForAPI.forEach((el) => {
+    inputArr.forEach((el) => {
       if (!Number(el)) {
-        cityStreet.push(`${params}${el}`);
+        addressTextArr.push(`${params}${el}`);
       } else if (Number(el)) {
-        homeNum = el;
+        homeNumber = el;
       } else {
-        console.log('error', el);
+        console.error('input error', el);// переписать?
       }
     });
   } else {
-    input.forEach((el) => {
-      cityStreet.push(`${params}${el}`); //  +ул+тверская+4 +1+2+3
+    inputArr.forEach((el) => {
+      addressTextArr.push(`${params}${el}`);
     });
   }
-  cityStreet = cityStreet.join('');
-  return { cityStreet, homeNum };
+  const addressText = addressTextArr.join('');
+  return { addressText, homeNumber };
 };
 
 const getAdCoordinates = async (inputs) => { // inputs  объект по форме
-  let street = strToArr(inputs.city, '+');// обьект city по name инпуту
-  console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++= this STREET from helpers js ', street);
-  console.log('this is  input', inputs);
+  const addressForAPI = convertInputForAPI(inputs.city, '+');// +ул+тверская+4 +1+2+3
   const response = await fetch(
-    `https://geocode-maps.yandex.ru/1.x/?lang=ru&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&format=json&geocode=${inputs.city}${street.street}&results=1`,
+    `https://geocode-maps.yandex.ru/1.x/?lang=ru&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&format=json&geocode=${inputs.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`,
   ); // Москва,+Тверская+улица,+дом+7;
   let data = await response.json();
-  // const data = await axios.get('https://geocode-maps.yandex.ru/1.x/?lang=ru&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&format=json&geocode=${inputs.city}${street.street}&results=1`);
+  const responseI = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
 
-  // eslint-disable-next-line max-len
-  const responseForFromIAPI = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
-
-  if (!responseForFromIAPI) {
-    street = strToArr(inputs.city, '%20');
-    const response = await fetch(
-      `http://api.positionstack.com/v1/forward?access_key=8c60b74a91f924ce61d118ccaafef034&query=${street.homeNum}%20${inputs.city}${street.street}`,
+  if (!responseI) {
+    const addressForIIAPI = convertInputForAPI(inputs.city, '%20');
+    data = await fetch(
+      `http://api.positionstack.com/v1/forward?access_key=8c60b74a91f924ce61d118ccaafef034&query=${addressForIIAPI.homeNum}%20${inputs.city}${addressForIIAPI.addressText}`,
     );
-    data = await response.json();
+    const responseII = await data.json();
     return {
-      coordinates: [data.data[0].latitude, data.data[0].longitude],
+      coordinates: [responseII.data[0].latitude, responseII.data[0].longitude],
     };
   }
-
-  const coordinatesForFromIAPI = responseForFromIAPI.split(' ').map((el) => Number(el)).reverse();
-  // coordinatesForFromIAPI: "37.615057 55.757425" =>  [55.757425, 37.615057]
+  const coordinatesForFromIAPI = responseI.split(' ').map((el) => Number(el)).reverse();
+  console.log('mapHelperFront', responseI);
   return {
-    coordinates: coordinatesForFromIAPI,
+    coordinates: coordinatesForFromIAPI, // coordinate: [массив с 2 числами]
+    // coordinatesForFromIAPI: "37.615057 55.757425" =>  [55.757425, 37.615057]
   };
 };
 
