@@ -3,7 +3,7 @@ const {
   Advertisement, Species, Image, User, Favorite,
 } = require('../../db/models');
 const { CustomError } = require('../error/errors');
-const mapHelper = require('../helpers/mapHelper');
+const { getAdCoordinates } = require('../helpers/mapHelperBack');
 
 const getAllAds = async (req, res) => {
   const {
@@ -47,9 +47,12 @@ const addAd = async (req, res) => {
   const {
     title, animalDescription, species, breed, price, age, city, address,
   } = req.body;
+
+  const coordinatesInObject = await getAdCoordinates({ city, address });
   const { id: speciesId } = await Species.findOne({ where: { species } });
+
   if (speciesId) {
-    const result = await Advertisement.create({
+    const newAd = await Advertisement.create({
       userId: req.session.user.id,
       title,
       animalDescription,
@@ -59,21 +62,17 @@ const addAd = async (req, res) => {
       price,
       city,
       address,
+      latitude: coordinatesInObject.coordinates[0],
+      longitude: coordinatesInObject.coordinates[1],
     }, {});
-    const images = req.files.map((el) => ({ advertisementId: result.id, image: el.path.slice(6) }));
-    for (let i = 0; i < images.length; i += 1) {
-      await Image.create(images[i], {});
-    }
+
+    const images = req.files.map((el) => ({ advertisementId: newAd.id, image: el.path.slice(6) }));
+    for (let i = 0; i < images.length; i += 1) { await Image.create(images[i], {}); }
+
+    res.json(newAd);
     res.sendStatus(200);
   } else res.sendStatus(400);
 };
-
-// MAP
-// const category_id = convertCategoryId(category);
-// const coordinates = await mapHelper({ city, address });
-// console.log(coordinates);
-// const updatePostWithCoordinates =
-// MAP
 
 const deleteAd = async (req, res) => {
   const { id: adId } = req.params;
@@ -91,7 +90,7 @@ const deleteAd = async (req, res) => {
   }
 };
 
-const editAd = async (req, res) => {
+const editAd = async (req, res, next) => {
   const { id: adId } = req.params;
   const usrId = req.session.user.id;
   try {
@@ -142,9 +141,7 @@ const deleteFromFavourites = async (req, res) => {
 
 const getAllFavourites = async (req, res) => {
   try {
-    const {
-      speciesId, limit, offset,
-    } = req.query;
+    // const { speciesId, limit, offset, } = req.query;
     let result = await User.findAll({
       attributes: ['id'],
       where: {
@@ -178,12 +175,14 @@ const getAllFavourites = async (req, res) => {
         phoneNumber: el.phoneNumber,
         city: el.city,
         address: el.address,
+        latitude: el.latitude,
+        longitude: el.longitude,
       };
     });
 
     return res.json(result);
   } catch (error) {
-    console.log(error);
+    // console.log('getAllFavourites error', error);
     return res.sendStatus(500);
   }
 };
@@ -214,7 +213,9 @@ const getAd = async (req, res) => {
         price: el.price,
         phoneNumber: el.phoneNumber,
         city: el.city,
-        address: el.Location.address,
+        address: el.address,
+        latitude: el.latitude,
+        longitude: el.longitude,
         created: el.createdAt,
       });
     });
@@ -226,7 +227,6 @@ const getAd = async (req, res) => {
 };
 
 module.exports = {
-  // getAllPost,
   getAllAds,
   addAd,
   deleteAd,
@@ -235,5 +235,4 @@ module.exports = {
   deleteFromFavourites,
   editAd,
   getAd,
-  // updateAdWithCoordinates,
 };

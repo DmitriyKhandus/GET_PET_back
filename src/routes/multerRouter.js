@@ -4,7 +4,7 @@ const upload = require('../middlewares/upload');
 const multerRouter = Router();
 
 multerRouter.post('/', upload.single('file'), (req, res) => {
-  console.log(req);
+  // console.log('multer', req);
   res.sendStatus(200);
 });
 

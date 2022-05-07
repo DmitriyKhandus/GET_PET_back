@@ -12,9 +12,7 @@ module.exports = {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        // unique: true,
         len: [2, 15],
-        // 2-10 символов, возможны цифры, cтрочные и прописные буквы, _-
       },
       email: {
         type: DataTypes.STRING,
@@ -39,7 +37,7 @@ module.exports = {
       phoneNumber: {
         type: DataTypes.TEXT,
         unique: true,
-        is: /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
+        is: /\(?(\d{3})\)?([ .-]?)(\d{3})\2(\d{4})/,
         // (123) 456 7899
         // (123).456.7899
         // (123)-456-7899

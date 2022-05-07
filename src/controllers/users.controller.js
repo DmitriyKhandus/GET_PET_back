@@ -2,7 +2,7 @@ const { User } = require('../../db/models');
 const { CustomError } = require('../error/errors');
 
 const editUser = async (req, res, next) => {
-  console.log(req.file);
+  // console.log('editUser', req.file);
   let updatedFields = Object.entries(req.body).filter((el) => el[1]);
   if (updatedFields.length) {
     updatedFields = Object.fromEntries(updatedFields);
@@ -26,7 +26,7 @@ const getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     const obj = await User.findByPk(id, { attributes: ['name', 'avatarPath', 'aboutUser', 'email', 'phoneNumber'] });
-    console.log(obj);
+    // console.log('getUser', obj);
     if (obj === null) { return next(CustomError.badRequest('Пользователь не найден')); }
     return res.json(
       obj,
