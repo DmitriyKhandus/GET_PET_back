@@ -1,5 +1,6 @@
-// const axios = require('axios')
-const fetch = require('node-fetch');
+const axios = require('axios');
+// const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 const convertInputForAPI = (inputedAddress, params) => {
   const inputArr = inputedAddress.split(',').join('').split('.').join('')
@@ -31,6 +32,9 @@ const getAdCoordinates = async (inputs) => { // inputs  объект по фор
     `https://geocode-maps.yandex.ru/1.x/?lang=ru&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&format=json&geocode=${inputs.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`,
   ); // Москва,+Тверская+улица,+дом+7;
   let data = await response.json();
+  console.log(await axios.get(
+    `https://geocode-maps.yandex.ru/1.x/?lang=ru&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&format=json&geocode=${inputs.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`,
+  ));
   const responseI = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
 
   if (!responseI) {
