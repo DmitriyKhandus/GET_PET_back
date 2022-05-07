@@ -1,5 +1,5 @@
 const axios = require('axios');
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 // const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 const convertInputForAPI = (inputedAddress, params) => {
@@ -33,17 +33,20 @@ const getAdCoordinates = async (inputs) => { // inputs  объект по фор
   // );
   // let data = await response.json();
   // );
-  let data = await axios.get(
+  const data = await axios.get(
     `https://geocode-maps.yandex.ru/1.x/?lang=ru&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&format=json&geocode=${inputs.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`,
   );
   const responseI = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
 
   if (!responseI) {
     const addressForIIAPI = convertInputForAPI(inputs.city, '%20');
-    data = await fetch(
+    // data = await fetch(
+    //   `http://api.positionstack.com/v1/forward?access_key=8c60b74a91f924ce61d118ccaafef034&query=${addressForIIAPI.homeNum}%20${inputs.city}${addressForIIAPI.addressText}`,
+    // );
+    // const responseII = await data.json();
+    const responseII = await axios.get(
       `http://api.positionstack.com/v1/forward?access_key=8c60b74a91f924ce61d118ccaafef034&query=${addressForIIAPI.homeNum}%20${inputs.city}${addressForIIAPI.addressText}`,
     );
-    const responseII = await data.json();
     return {
       coordinates: [responseII.data[0].latitude, responseII.data[0].longitude],
     };

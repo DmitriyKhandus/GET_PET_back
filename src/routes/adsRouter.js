@@ -8,9 +8,9 @@ const {
 
 const adsRouter = Router();
 
+adsRouter.get('/species', getAllSpecies);
 adsRouter.get('/:id', getAd);
 adsRouter.get('/', getAllAds);
-adsRouter.get('/species', getAllSpecies);
 adsRouter.post('/', checkAuth, upload.array('file', 3), addAd);
 adsRouter.delete('/:id', checkAuthor, deleteAd);
 adsRouter.patch('/:id', checkAuthor, editAd);
