@@ -10,6 +10,9 @@ module.exports = {
       title: {
         type: Sequelize.STRING,
       },
+      image: {
+        type: Sequelize.TEXT,
+      },
       tipText: {
         type: Sequelize.TEXT,
       },
