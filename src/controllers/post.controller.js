@@ -199,16 +199,18 @@ const getOnePost = async (req, res) => {
       const images = el.Images.map((elem) => elem.image);
       return ({
         id: el.id,
+        city: el.Location.city,
+        address: el.Location.address,
         title: el.title,
-        description: el.animal_description,
+        description: el.animalDescription,
         age: el.age,
+        userImage: el.User.avatarPath,
+        userName: el.User.name,
         images,
         species: el.Species.species,
         breed: el.breed,
         price: el.price,
         phoneNumber: el.phoneNumber,
-        city: el.city,
-        address: el.Location.address,
         created: el.createdAt,
       });
     });
@@ -221,7 +223,6 @@ const getOnePost = async (req, res) => {
 };
 
 module.exports = {
-  // getAllPost,
   getAll,
   addPost,
   deletePost,
