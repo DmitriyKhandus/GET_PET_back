@@ -15,7 +15,6 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       validate: {
         len: [2, 15],
-        // 2-10 символов, возможны цифры, cтрочные и прописные буквы, _-
       },
     },
     email: {

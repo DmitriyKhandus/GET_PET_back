@@ -1,16 +1,16 @@
 const { Op } = require('sequelize');
 const {
-  Advertisement, Species, Image, User, Location, Favorite,
+  Advertisement, Species, Image, User, Favorite,
 } = require('../../db/models');
 const { CustomError } = require('../error/errors');
 
 const getAll = async (req, res) => {
   const {
-    species, limit, location, offset, ageMin, ageMax,
+    species, limit, offset, ageMin, ageMax,
   } = req.query;
   try {
     const result = await Advertisement.findAll({
-      include: [{ model: Location, where: location ? { location } : {} },
+      include: [
         { model: Species, where: species ? { species } : {} },
         { model: User },
         { model: Image, attributes: ['image'] }],
@@ -29,9 +29,12 @@ const getAll = async (req, res) => {
         images,
         species: el.Species.species,
         breed: el.breed,
-        price: el.price, // userId??
+        price: el.price,
         phoneNumber: el.phoneNumber,
-        location: el.Location.location,
+        city: el.city,
+        address: el.address,
+        latitude: el.latitude,
+        longitude: el.longitude,
         created: el.createdAt,
       };
     });
@@ -43,11 +46,13 @@ const getAll = async (req, res) => {
 
 const addPost = async (req, res) => {
   const {
-    title, animalDescription, species, breed, price, age, location,
+    title, animalDescription, species, breed, price, age, city, address,
   } = req.body;
+
+  const coordinatesInObject = await getAdCoordinates({ city, address });
   const { id: speciesId } = await Species.findOne({ where: { species } });
-  const { id: locationId } = await Location.findOne({ where: { location } });
-  if (speciesId && locationId) {
+
+  if (speciesId) {
     const result = await Advertisement.create({
       userId: req.session.user.id,
       title,
@@ -56,7 +61,10 @@ const addPost = async (req, res) => {
       speciesId,
       breed,
       price,
-      locationId,
+      city,
+      address,
+      latitude: coordinatesInObject.coordinates[0],
+      longitude: coordinatesInObject.coordinates[1],
     }, {});
     const images = req.files.map((el) => ({ advertisementId: result.id, image: el.path.slice(6) }));
     for (let i = 0; i < images.length; i += 1) {
@@ -64,6 +72,11 @@ const addPost = async (req, res) => {
     }
     res.sendStatus(200);
   } else res.sendStatus(400);
+};
+
+const getAllSpecies = async (req, res) => {
+  const species = await Species.findAll();
+  res.json(species);
 };
 
 const deletePost = async (req, res) => {
@@ -133,9 +146,7 @@ const deleteFromFavourites = async (req, res) => {
 
 const getAllFavourites = async (req, res) => {
   try {
-    const {
-      speciesId, limit, location, offset,
-    } = req.query;
+    // const { speciesId, limit, offset, } = req.query;
     let result = await User.findAll({
       attributes: ['id'],
       where: {
@@ -150,14 +161,11 @@ const getAllFavourites = async (req, res) => {
         }, {
           attributes: ['species'],
           model: Species,
-        }, {
-          attributes: ['city'],
-          model: Location,
         }],
       },
 
     });
-    console.log(result);
+    // console.log('getAllFavourites joined result', result);
     result = result[0].Advertisements.map((el) => {
       const images = el.Images.map((elem) => elem.image);
       return {
@@ -170,14 +178,16 @@ const getAllFavourites = async (req, res) => {
         breed: el.breed,
         price: el.price,
         phoneNumber: el.phoneNumber,
-        city: el.Location.city,
-        address: el.Location.address,
+        city: el.city,
+        address: el.address,
+        latitude: el.latitude,
+        longitude: el.longitude,
       };
     });
 
     return res.json(result);
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    // console.log('getAllFavourites error', error);
     return res.sendStatus(500);
   }
 };
@@ -186,7 +196,7 @@ const getOnePost = async (req, res) => {
   const { id: postId } = req.params;
   try {
     const result = await Advertisement.findAll({
-      include: [{ model: Location },
+      include: [
         { model: Species },
         { model: User },
         { model: Image, attributes: ['image'] }],
@@ -199,10 +209,8 @@ const getOnePost = async (req, res) => {
       const images = el.Images.map((elem) => elem.image);
       return ({
         id: el.id,
-        city: el.Location.city,
-        address: el.Location.address,
         title: el.title,
-        description: el.animalDescription,
+        animalDescription: el.animalDescription,
         age: el.age,
         userImage: el.User.avatarPath,
         userName: el.User.name,
@@ -211,11 +219,14 @@ const getOnePost = async (req, res) => {
         breed: el.breed,
         price: el.price,
         phoneNumber: el.phoneNumber,
+        city: el.city,
+        address: el.address,
+        latitude: el.latitude,
+        longitude: el.longitude,
         created: el.createdAt,
       });
     });
-    // return res.json(raw);
-    console.log(raw);
+    // console.log('getAd raw', raw);
     return res.json(raw);
   } catch (error) {
     return res.sendStatus(500);
@@ -231,4 +242,5 @@ module.exports = {
   deleteFromFavourites,
   editPost,
   getOnePost,
+  getAllSpecies,
 };
