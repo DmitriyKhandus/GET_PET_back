@@ -200,7 +200,7 @@ const getOnePost = async (req, res) => {
       return ({
         id: el.id,
         title: el.title,
-        description: el.animal_description,
+        description: el.animalDescription,
         age: el.age,
         images,
         species: el.Species.species,
