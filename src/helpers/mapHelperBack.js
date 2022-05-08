@@ -26,26 +26,27 @@ const convertInputForAPI = (inputedAddress, params) => {
   return { addressText, homeNumber };
 };
 
-const getAdCoordinates = async (inputs) => { // inputs  объект по форме
-  const addressForAPI = convertInputForAPI(inputs.city, '+');// +ул+тверская+4 +1+2+3
+const getAdCoordinates = async (inputsObject) => { // inputs  объект по форме
+  const addressForAPI = convertInputForAPI(inputsObject.address, '+');
+  // +ул+тверская+4 +1+2+3
   // const response = await fetch(
   //   `https://geocode-maps.yandex.ru/1.x/?lang=ru&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&format=json&geocode=${inputs.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`,
   // );
   // let data = await response.json();
   // );
   const data = await axios.get(
-    `https://geocode-maps.yandex.ru/1.x/?lang=ru&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&format=json&geocode=${inputs.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`,
+    `https://geocode-maps.yandex.ru/1.x/?lang=ru&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&format=json&geocode=${inputsObject.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`,
   );
   const responseI = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
 
   if (!responseI) {
-    const addressForIIAPI = convertInputForAPI(inputs.city, '%20');
+    const addressForIIAPI = convertInputForAPI(inputsObject.address, '%20');
     // data = await fetch(
     //   `http://api.positionstack.com/v1/forward?access_key=8c60b74a91f924ce61d118ccaafef034&query=${addressForIIAPI.homeNum}%20${inputs.city}${addressForIIAPI.addressText}`,
     // );
     // const responseII = await data.json();
     const responseII = await axios.get(
-      `http://api.positionstack.com/v1/forward?access_key=8c60b74a91f924ce61d118ccaafef034&query=${addressForIIAPI.homeNum}%20${inputs.city}${addressForIIAPI.addressText}`,
+      `http://api.positionstack.com/v1/forward?access_key=8c60b74a91f924ce61d118ccaafef034&query=${addressForIIAPI.homeNumber}%20${inputsObject.city}${addressForIIAPI.addressText}`,
     );
     return {
       coordinates: [responseII.data[0].latitude, responseII.data[0].longitude],
