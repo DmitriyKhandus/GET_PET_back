@@ -11,14 +11,13 @@ const getAllTips = async (req, res) => {
   } catch (error) {
     return res.sendStatus(500);
   }
-  if (speciesId) {
-    try {
-      const result = await Tip.findAll({ where: { speciesId }, attributes: ['id', 'title', 'webSite', 'tipText'] });
-      res.status(200).json(result);
-    } catch (error) {
-      return res.sendStatus(500);
-    }
-  } else res.sendStatus(400);
+
+  try {
+    const result = await Tip.findAll({ where: speciesId ? { speciesId } : {}, attributes: ['id', 'title', 'image', 'webSite', 'tipText'] });
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
 };
 
 module.exports = { getAllTips };

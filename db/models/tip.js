@@ -13,6 +13,7 @@ module.exports = (sequelize) => {
     title: DataTypes.STRING,
     tipText: DataTypes.TEXT,
     webSite: DataTypes.TEXT,
+    image: DataTypes.TEXT,
     speciesId: DataTypes.INTEGER,
     timestamps: false,
   }, {
