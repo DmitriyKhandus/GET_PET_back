@@ -7,7 +7,7 @@ const { getAdCoordinates } = require('../helpers/mapHelperBack');
 
 const getAll = async (req, res) => {
   const {
-    species, limit, offset, ageMin, ageMax,
+    species, limit, offset, city,
   } = req.query;
   try {
     const result = await Advertisement.findAll({
@@ -15,7 +15,7 @@ const getAll = async (req, res) => {
         { model: Species, where: species ? { species } : {} },
         { model: User },
         { model: Image, attributes: ['image'] }],
-      where: ageMin ? { age: { [Op.between]: [ageMin, ageMax] } } : {}, // не проверено
+      where: { city: city || {} }, // не проверено
       offset: offset || 0,
       limit: limit || 20,
     });
