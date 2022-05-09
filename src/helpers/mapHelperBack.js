@@ -3,7 +3,6 @@ const axios = require('axios');
 const convertInputForAPI = (inputedAddress, params) => {
   const inputArr = inputedAddress.split(',').join('').split('.').join('')
     .split('');
-  console.log('inputArr', inputArr); // после проверки удалить?
   const addressTextArr = [];
   let homeNumber;
 
@@ -21,9 +20,9 @@ const convertInputForAPI = (inputedAddress, params) => {
 const getAdCoordinates = async (inputsObject) => {
   const addressForAPI = convertInputForAPI(inputsObject.address, '%20');
 
-  const requestToIAPI = encodeURI(`https://geocode-maps.yandex.ru/1.x/?apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&geocode=${inputsObject.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`);
+  const requestToIAPI = encodeURI(`https://geocode-maps.yandex.ru/1.x/?format=json&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&geocode=${inputsObject.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`);
   const data = await axios.get(requestToIAPI);
-  const responseI = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
+  const responseI = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
 
   if (!responseI) {
     const requestToIIAPI = encodeURI(`http://api.positionstack.com/v1/forward?access_key=8c60b74a91f924ce61d118ccaafef034&query=${addressForAPI.homeNumber}%20${inputsObject.city}${addressForAPI.addressText}`);
