@@ -47,9 +47,9 @@ const signIn = async (req, res, next) => {
 };
 
 const signOut = async (req, res) => {
+  res.clearCookie('cookieName');
   req.session.destroy((err) => {
     if (err) return res.sendStatus(500);
-    res.clearCookie(req.app.get('cookieName'));
     return res.sendStatus(200);
   });
 };

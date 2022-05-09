@@ -15,7 +15,7 @@ const getAll = async (req, res) => {
         { model: Species, where: species ? { species } : {} },
         { model: User },
         { model: Image, attributes: ['image'] }],
-      where: { city: city || {} }, // не проверено
+      where: city ? { city } : {}, // не проверено
       offset: offset || 0,
       limit: limit || 30,
     });
