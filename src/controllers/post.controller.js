@@ -3,7 +3,7 @@ const {
   Advertisement, Species, Image, User, Favorite,
 } = require('../../db/models');
 const { CustomError } = require('../error/errors');
-const { getAdCoordinates } = require('../helpers/mapHelperBack');
+// const { getAdCoordinates } = require('../helpers/mapHelperBack');
 
 const getAll = async (req, res) => {
   const {
@@ -47,10 +47,10 @@ const getAll = async (req, res) => {
 
 const addPost = async (req, res) => {
   const {
-    title, animalDescription, species, breed, price, age, city, address,
+    title, animalDescription, species, breed, price, age, city, address, latitude, longitude,
   } = req.body;
 
-  const coordinatesInObject = await getAdCoordinates({ city, address });
+  // const coordinatesInObject = await getAdCoordinates({ city, address });
   const { id: speciesId } = await Species.findOne({ where: { species } });
 
   if (speciesId) {
@@ -64,8 +64,10 @@ const addPost = async (req, res) => {
       price,
       city,
       address,
-      latitude: coordinatesInObject.coordinates[0],
-      longitude: coordinatesInObject.coordinates[1],
+      latitude,
+      longitude,
+      // latitude: coordinatesInObject.coordinates[0],
+      // longitude: coordinatesInObject.coordinates[1],
     }, {});
     const images = req.files.map((el) => ({ advertisementId: result.id, image: el.path.slice(6) }));
     for (let i = 0; i < images.length; i += 1) {
@@ -102,11 +104,11 @@ const editPost = async (req, res, next) => { // добавлены ли коор
     let updatedFields = Object.entries(req.body).filter((el) => el[1]);
     if (updatedFields.length) {
       updatedFields = Object.fromEntries(updatedFields);
-      const coordinatesInObject = await getAdCoordinates(
-        { city: req.body.city, address: req.body.address },
-      );
-      req.body.lalitude = coordinatesInObject.coordinates[0];
-      req.body.longitude = coordinatesInObject.coordinates[1];
+      // const coordinatesInObject = await getAdCoordinates(
+      //   { city: req.body.city, address: req.body.address },
+      // );
+      // req.body.lalitude = coordinatesInObject.coordinates[0];
+      // req.body.longitude = coordinatesInObject.coordinates[1];
       const [, updatedUser] = await Advertisement.update(updatedFields, {
         where: { id: postId },
         returning: true,

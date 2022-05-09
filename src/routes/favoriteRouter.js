@@ -11,4 +11,4 @@ favoriteRouter.get('/:id', checkAuth, addToFavourites);
 favoriteRouter.get('/', checkAuth, getAllFavourites);
 favoriteRouter.delete('/:id', checkAuth, deleteFromFavourites);
 
-module.exports = favoriteRouter;
+module.exports = { favoriteRouter };

@@ -15,4 +15,4 @@ postRouter.post('/', checkAuth, upload.array('file', 3), addPost);
 postRouter.delete('/:id', checkAuthor, deletePost);
 postRouter.patch('/:id', checkAuthor, editPost);
 
-module.exports = postRouter;
+module.exports = { postRouter };
