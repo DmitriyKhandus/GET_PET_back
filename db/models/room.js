@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize) => {
   class Room extends Model {
     static associate({ Message }) {
-      this.hasMany(Message, { foreignKey: 'messageId' });
+
     }
   }
 
