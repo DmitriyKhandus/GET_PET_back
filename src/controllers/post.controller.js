@@ -17,7 +17,7 @@ const getAll = async (req, res) => {
         { model: Image, attributes: ['image'] }],
       where: ageMin ? { age: { [Op.between]: [ageMin, ageMax] } } : {}, // не проверено
       offset: offset || 0,
-      limit: limit || 20,
+      limit: limit || 30,
     });
     let raw = result.map((x) => x.get({ plain: true }));
     raw = result.map((el) => {
