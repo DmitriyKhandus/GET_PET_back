@@ -102,6 +102,11 @@ const editPost = async (req, res, next) => { // добавлены ли коор
     let updatedFields = Object.entries(req.body).filter((el) => el[1]);
     if (updatedFields.length) {
       updatedFields = Object.fromEntries(updatedFields);
+      const coordinatesInObject = await getAdCoordinates(
+        { city: req.body.city, address: req.body.address },
+      );
+      req.body.lalitude = coordinatesInObject.coordinates[0];
+      req.body.longitude = coordinatesInObject.coordinates[1];
       const [, updatedUser] = await Advertisement.update(updatedFields, {
         where: { id: postId },
         returning: true,
