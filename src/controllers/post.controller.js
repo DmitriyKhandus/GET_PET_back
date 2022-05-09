@@ -91,7 +91,7 @@ const deletePost = async (req, res) => {
   }
 };
 
-const editPost = async (req, res, next) => {
+const editPost = async (req, res, next) => { // добавлены ли координалы?
   const { id: postId } = req.params;
   const usrId = req.session.user.id;
   try {

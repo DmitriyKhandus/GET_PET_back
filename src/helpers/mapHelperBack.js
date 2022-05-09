@@ -26,7 +26,7 @@ const convertInputForAPI = (inputedAddress, params) => {
   return { addressText, homeNumber };
 };
 
-const getAdCoordinates = async (inputsObject) => { // inputs  объект по форме
+const getAdCoordinates = async (inputsObject) => {
   const addressForAPI = convertInputForAPI(inputsObject.address, '+');
   // +ул+тверская+4 +1+2+3
   // const response = await fetch(
@@ -53,7 +53,7 @@ const getAdCoordinates = async (inputsObject) => { // inputs  объект по 
     };
   }
   const coordinatesForFromIAPI = responseI.split(' ').map((el) => Number(el)).reverse();
-  console.log('mapHelperFront', responseI);
+  console.log('mapHelperFront', responseI); // после проверки удалить?
   return {
     coordinates: coordinatesForFromIAPI, // coordinate: [массив с 2 числами]
     // coordinatesForFromIAPI: "37.615057 55.757425" =>  [55.757425, 37.615057]
