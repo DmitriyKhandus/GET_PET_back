@@ -12,6 +12,9 @@ module.exports = {
       title: {
         type: DataTypes.STRING,
       },
+      image: {
+        type: DataTypes.TEXT,
+      },
       tipText: {
         type: DataTypes.TEXT,
       },
