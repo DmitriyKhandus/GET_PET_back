@@ -4,7 +4,7 @@ const checkAuthor = require('../middlewares/checkAuthor');
 const upload = require('../middlewares/upload');
 const {
   getAd, getAllAds, getAllSpecies, addAd, deleteAd, editAd,
-} = require('../controllers/ads.controller');
+} = require('../controllers/post.controller');
 
 const postRouter = Router();
 

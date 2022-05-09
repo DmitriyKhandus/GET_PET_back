@@ -3,7 +3,7 @@ const checkAuth = require('../middlewares/checkAuth');
 
 const {
   getAllFavourites, addToFavourites, deleteFromFavourites,
-} = require('../controllers/ads.controller');
+} = require('../controllers/post.controller');
 
 const favoriteRouter = Router();
 
