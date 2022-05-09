@@ -236,7 +236,8 @@ const getOnePost = async (req, res) => {
 };
 
 const getAllSpecies = async (req, res) => {
-  const species = await Species.findAll();
+  let species = await Species.findAll({ attributes: ['species'] });
+  species = species.map((el) => el.species);
   res.json(species);
 };
 
