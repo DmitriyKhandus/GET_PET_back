@@ -8,8 +8,8 @@ const ErrorHandler = require('./src/middlewares/errorsMv');
 
 const authRouter = require('./src/routes/authRouter');
 const usersRouter = require('./src/routes/usersRouter');
-const favoritesRouter = require('./src/routes/favoritesRouter');
-const adsRouter = require('./src/routes/adsRouter');
+const favoriteRouter = require('./src/routes/favoriteRouter');
+const postRouter = require('./src/routes/postRouter');
 const tipsRouter = require('./src/routes/tipsRouter');
 
 const app = express();
@@ -45,8 +45,8 @@ app.use(
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
-app.use('/ads', adsRouter);
-app.use('/ads/favorites', favoritesRouter);
+app.use('/posts', postRouter);
+app.use('/posts/favorites', favoriteRouter);
 app.use('/tips', tipsRouter);
 app.use(ErrorHandler);
 
