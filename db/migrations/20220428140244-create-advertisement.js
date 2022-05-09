@@ -47,13 +47,17 @@ module.exports = {
       phoneNumber: {
         type: DataTypes.STRING,
       },
-      locationId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'Locations',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
+      city: {
+        type: DataTypes.STRING,
+      },
+      address: {
+        type: DataTypes.STRING,
+      },
+      latitude: {
+        type: DataTypes.FLOAT,
+      },
+      longitude: {
+        type: DataTypes.FLOAT,
       },
       createdAt: {
         allowNull: false,
