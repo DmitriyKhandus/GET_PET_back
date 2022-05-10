@@ -34,7 +34,6 @@ wsServer.on('connection', (ws, request) => {
           receiverId: parsedMessage.payload.receiver,
         });
         clientMap.forEach((client) => {
-          console.log('felkermlkermlkemr', client.id, parsedMessage.payload.receiverId);
           if (client.readyState === WebSocket.OPEN && client.id === parsedMessage.payload.receiverId) {
             client.send(JSON.stringify({
               type: parsedMessage.type,
