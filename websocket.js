@@ -29,7 +29,7 @@ wsServer.on('connection', (ws, request) => {
 
       case 'NEW_MESSAGE':
         await Message.create({
-          messageBody: parsedMessage.payload.message,
+          messageBody: parsedMessage.payload.message.message,
           senderId: request.session.user.id,
           receiverId: parsedMessage.payload.receiver,
         });
