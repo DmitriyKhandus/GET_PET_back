@@ -15,7 +15,7 @@ const getAll = async (req, res) => {
         { model: Species, where: species ? { species } : {} },
         { model: User },
         { model: Image, attributes: ['image'] }],
-      where: { city: city || {} }, // не проверено
+      where: city ? { city } : {}, // не проверено
       offset: offset || 0,
       limit: limit || 30,
     });
@@ -64,7 +64,6 @@ const addPost = async (req, res) => {
       price,
       city,
       address,
-
       latitude: coordinatesInObject.coordinates[0],
       longitude: coordinatesInObject.coordinates[1],
     }, {});
@@ -103,11 +102,13 @@ const editPost = async (req, res, next) => { // добавлены ли коор
     let updatedFields = Object.entries(req.body).filter((el) => el[1]);
     if (updatedFields.length) {
       updatedFields = Object.fromEntries(updatedFields);
-      // const coordinatesInObject = await getAdCoordinates(
-      //   { city: req.body.city, address: req.body.address },
-      // );
-      // req.body.lalitude = coordinatesInObject.coordinates[0];
-      // req.body.longitude = coordinatesInObject.coordinates[1];
+      const coordinatesInObject = await getAdCoordinates(
+        { city: req.body.city, address: req.body.address },
+      );
+
+      req.body.lalitude = coordinatesInObject.coordinates[0];
+      req.body.longitude = coordinatesInObject.coordinates[1];
+
       const [, updatedUser] = await Advertisement.update(updatedFields, {
         where: { id: postId },
         returning: true,
