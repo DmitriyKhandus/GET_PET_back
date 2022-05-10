@@ -10,7 +10,7 @@ const getAllMessages = async (req, res) => {
         [Op.or]: [{ senderId, receiverId },
           { senderId: receiverId, receiverId: senderId }],
       },
-      attributes: [['messageBody', 'message'], 'createdAt'],
+      attributes: [['messageBody', 'message'], 'createdAt', 'senderId'],
       raw: true,
     });
     if (result.length !== 0) {
