@@ -10,6 +10,7 @@ module.exports = {
       role: 'admin',
       isBanned: false,
       aboutUser: 'Администратор',
+      avatarPath: '/img/user01Avatar.jpeg',
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -32,7 +33,7 @@ module.exports = {
       updatedAt: new Date(),
     },
     {
-      name: 'Анстасия',
+      name: 'Анастасия',
       email: 'user3@user.ru',
       password: secretPass,
       isBanned: false,
@@ -55,7 +56,6 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
-
     ]);
   },
 
