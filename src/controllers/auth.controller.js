@@ -1,6 +1,9 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const { User } = require('../../db/models');
 const { CustomError } = require('../error/errors');
+
+const { COOKIE_NAME } = process.env;
 
 const signUp = async (req, res, next) => {
   const { name, password, email } = req.body;
@@ -47,9 +50,9 @@ const signIn = async (req, res, next) => {
 };
 
 const signOut = async (req, res) => {
+  res.clearCookie(COOKIE_NAME);
   req.session.destroy((err) => {
     if (err) return res.sendStatus(500);
-    res.clearCookie(req.app.get('cookieName'));
     return res.sendStatus(200);
   });
 };

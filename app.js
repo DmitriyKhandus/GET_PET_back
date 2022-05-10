@@ -16,7 +16,7 @@ const { messageRouter } = require('./src/routes/messageRouter');
 const { COOKIE_SECRET, COOKIE_NAME } = process.env;
 const app = express();
 const sessionConfig = {
-  name: app.get('cookieName'),
+  name: COOKIE_NAME,
   secret: COOKIE_SECRET,
   resave: false,
   saveUninitialized: false,
@@ -29,8 +29,6 @@ const sessionConfig = {
 };
 
 const sessionParser = session(sessionConfig);
-
-app.set('cookieName', COOKIE_NAME);
 
 app.use(
   cors({
