@@ -217,6 +217,7 @@ const getOnePost = async (req, res) => {
         age: el.age,
         userImage: el.User.avatarPath,
         userName: el.User.name,
+        userId: el.User.id,
         images,
         species: el.Species.species,
         breed: el.breed,

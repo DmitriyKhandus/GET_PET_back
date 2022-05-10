@@ -9,14 +9,11 @@ const clientMap = new Map();
 
 wsServer.on('connection', (ws, request) => {
   const { id, name } = request.session.user;
-
   ws.id = id;
   clientMap.set(id, ws);
 
   ws.on('message', async (message) => {
     const parsedMessage = JSON.parse(message);
-    parsedMessage.payload = JSON.parse(parsedMessage.payload);
-    console.log(parsedMessage);
 
     switch (parsedMessage.type) {
       case 'USER_CONNECTED':
@@ -37,7 +34,8 @@ wsServer.on('connection', (ws, request) => {
           receiverId: parsedMessage.payload.receiver,
         });
         clientMap.forEach((client) => {
-          if (client.readyState === WebSocket.OPEN && client.id === parsedMessage.payload.receiver) {
+          console.log('felkermlkermlkemr', client.id, parsedMessage.payload.receiverId);
+          if (client.readyState === WebSocket.OPEN && client.id === parsedMessage.payload.receiverId) {
             client.send(JSON.stringify({
               type: parsedMessage.type,
               payload: {
