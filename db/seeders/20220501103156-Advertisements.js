@@ -194,7 +194,7 @@ module.exports = {
     {
       title: 'Сомики анцитрусы',
       animalDescription: 'Сом анциструс разных цветов отдам за сок или другую рыбку',
-      speciesId: 3,
+      speciesId: 6,
       userId: 5,
       price: 0,
       phoneNumber: 89857858734,
@@ -307,7 +307,7 @@ module.exports = {
     },
     {
       title: 'Кошка',
-      animalDescription: 'Отдадим кошку в добрые руки. Стерилизованная , к лотку приучена. Станет вам верным другом',
+      animalDescription: 'Отдадим кошку в добрые руки. Стерилизованная, к лотку приучена. Станет вам верным другом',
       speciesId: 2,
       userId: 4,
       price: 0,
