@@ -34,12 +34,22 @@ wsServer.on('connection', (ws, request) => {
           receiverId: parsedMessage.payload.receiver,
         });
         clientMap.forEach((client) => {
-          if (client.readyState === WebSocket.OPEN
-            && (client.id === parsedMessage.payload.receiver
-              || client.id === request.session.user.id)) {
+          if (client.readyState === WebSocket.OPEN && client.id === parsedMessage.payload.receiver) {
             client.send(JSON.stringify({
               type: parsedMessage.type,
               payload: {
+                owner: false,
+                name: parsedMessage.payload.name,
+                message: parsedMessage.payload.message,
+              },
+            }));
+          }
+
+          if (client.readyState === WebSocket.OPEN && client.id === request.session.user.id) {
+            client.send(JSON.stringify({
+              type: parsedMessage.type,
+              payload: {
+                owner: true,
                 name: parsedMessage.payload.name,
                 message: parsedMessage.payload.message,
               },
