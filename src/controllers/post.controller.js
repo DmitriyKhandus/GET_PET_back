@@ -46,33 +46,38 @@ const getAll = async (req, res) => {
 };
 
 const addPost = async (req, res) => {
-  const {
-    title, animalDescription, species, breed, price, age, city, address, /* latitude, longitude, */
-  } = req.body;
+  try {
+    const {
+      title, animalDescription, species, breed, price, age, city, address, /* latitude, longitude, */
+    } = req.body;
 
-  const coordinatesInObject = await getAdCoordinates({ city, address });
-  const { id: speciesId } = await Species.findOne({ where: { species } });
+    const coordinatesInObject = await getAdCoordinates({ city, address });
+    const { id: speciesId } = await Species.findOne({ where: { species } });
 
-  if (speciesId) {
-    const result = await Advertisement.create({
-      userId: req.session.user.id,
-      title,
-      animalDescription,
-      age,
-      speciesId,
-      breed,
-      price,
-      city,
-      address,
-      latitude: coordinatesInObject.coordinates[0],
-      longitude: coordinatesInObject.coordinates[1],
-    }, {});
-    const images = req.files.map((el) => ({ advertisementId: result.id, image: el.path.slice(6) }));
-    for (let i = 0; i < images.length; i += 1) {
-      await Image.create(images[i], {});
-    }
-    res.sendStatus(200);
-  } else res.sendStatus(400);
+    if (speciesId) {
+      const result = await Advertisement.create({
+        userId: req.session.user.id,
+        title,
+        animalDescription,
+        age,
+        speciesId,
+        breed,
+        price,
+        city,
+        address,
+        latitude: coordinatesInObject.coordinates[0],
+        longitude: coordinatesInObject.coordinates[1],
+      }, {});
+      const images = req.files.map((el) => ({ advertisementId: result.id, image: el.path.slice(6) }));
+      for (let i = 0; i < images.length; i += 1) {
+        await Image.create(images[i], {});
+      }
+      res.sendStatus(200);
+    } else res.sendStatus(400);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+  return res.sendStatus(400);
 };
 
 const deletePost = async (req, res) => {
