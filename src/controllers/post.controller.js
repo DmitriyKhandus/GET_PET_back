@@ -48,7 +48,7 @@ const getAll = async (req, res) => {
 const addPost = async (req, res) => {
   try {
     const {
-      title, animalDescription, species, breed, price, age, city, address, /* latitude, longitude, */
+      title, animalDescription, species, breed, price, age, city, address,
     } = req.body;
 
     const coordinatesInObject = await getAdCoordinates({ city, address });
@@ -96,7 +96,7 @@ const deletePost = async (req, res) => {
   }
 };
 
-const editPost = async (req, res, next) => { // добавлены ли координалы?
+const editPost = async (req, res, next) => {
   const { id: postId } = req.params;
   const usrId = req.session.user.id;
   try {

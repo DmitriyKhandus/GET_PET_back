@@ -2,30 +2,31 @@ const axios = require('axios');
 
 const convertInputForAPI = (inputedAddress, params) => {
   const inputArr = inputedAddress.split(',').join('').split('.').join('')
-    .split('');
+    .split(' ');
   const addressTextArr = [];
-  let homeNumber;
+  let homeNumber = [];
 
   inputArr.forEach((el) => {
     if (Number.isNaN(Number(el))) {
       addressTextArr.push(`${el}`);
-    } else { homeNumber = Number(el); }
+      // } else { homeNumber.push(`${el}`); }
+    } else { homeNumber.push(el); }
   });
-
+  homeNumber = homeNumber.join('').trim();
   const addressText = addressTextArr.join('').trim();
-
-  return { addressText: `${`${addressText}${params.toString()}`}`, homeNumber: `${homeNumber}%20` };
+  console.log(homeNumber);
+  return { addressText: `${`${addressText}${params.toString()}`}`, homeNumber: `${homeNumber}+` };
 };
 
 const getAdCoordinates = async (inputsObject) => {
-  const addressForAPI = convertInputForAPI(inputsObject.address, '%20');
+  const addressForAPI = convertInputForAPI(inputsObject.address, '+');
 
-  const requestToIAPI = encodeURI(`https://geocode-maps.yandex.ru/1.x/?format=json&apikey=c44f3c3e-02a3-4e09-8441-9da1eec78fa8&geocode=${inputsObject.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`);
+  const requestToIAPI = encodeURI(`https://geocode-maps.yandex.ru/1.x/?apikey=6cb886ee-1e08-4c26-8fa6-376a834d2cd5&format=json&geocode=${inputsObject.city}${addressForAPI.addressText}${addressForAPI.homeNumber}&results=1`);
   const data = await axios.get(requestToIAPI);
   const responseI = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
 
   if (!responseI) {
-    const requestToIIAPI = encodeURI(`http://api.positionstack.com/v1/forward?access_key=8c60b74a91f924ce61d118ccaafef034&query=${addressForAPI.homeNumber}%20${inputsObject.city}${addressForAPI.addressText}`);
+    const requestToIIAPI = encodeURI(`http://api.positionstack.com/v1/forward?access_key=8c60b74a91f924ce61d118ccaafef034&query=${addressForAPI.homeNumber}+${addressForAPI.addressText}${inputsObject.city}`);
     const responseII = await axios.get(await axios.get(requestToIIAPI));
     return { coordinates: [responseII.data[0].latitude, responseII.data[0].longitude] };
   }
