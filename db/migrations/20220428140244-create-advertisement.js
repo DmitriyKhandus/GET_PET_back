@@ -16,7 +16,7 @@ module.exports = {
         type: DataTypes.TEXT,
       },
       age: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.STRING,
       },
       speciesId: {
         type: DataTypes.INTEGER,
