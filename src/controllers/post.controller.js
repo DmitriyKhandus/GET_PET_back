@@ -72,7 +72,7 @@ const addPost = async (req, res) => {
       for (let i = 0; i < images.length; i += 1) {
         await Image.create(images[i], {});
       }
-      res.sendStatus(200);
+      return res.sendStatus(200);
     } else res.sendStatus(400);
   } catch (error) {
     return res.sendStatus(500);
