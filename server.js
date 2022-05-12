@@ -9,7 +9,7 @@ const server = createServer(app);
 
 server.on('upgrade', (request, socket, head) => {
   sessionParser(request, {}, () => {
-    if (!request.session.user.id) {
+    if (!request?.session?.user?.id) {
       socket.write('Status 401');
       socket.destroy();
 
